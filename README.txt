@@ -4,6 +4,8 @@ Capstone Project Proposal
 
 “Automated Alarm System”
 
+
+
     Team Members and Role
 
 David Gamez        drgamez@uwm.edu        programming, general design
