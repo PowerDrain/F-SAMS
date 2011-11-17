@@ -14,6 +14,10 @@ public class Control {
 		dir_indicator(zoneID);
 		
 		//Check if this is the only alarm
+		//No real checks for people, UI will
+		//auto update with no people and the 
+		//session log will reflect that the
+		//sprinklers are on and the power is off
 		if (only_alarm(al_type){
 				//Wait for 2 minutes, checking for a second alarm
 				double time = 0;
@@ -36,6 +40,8 @@ public class Control {
 		find_peps(zoneID);
 		
 		syslog("Timestamp: Fire event triggered in zone X");
+		//Will will write this data to the session log, this does not
+		//have to be a return String to the UI.
 		return ("Fire event triggered, system responding. . .");
 	}
 	
