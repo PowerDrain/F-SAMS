@@ -1,8 +1,9 @@
+#include <Windows.h>
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
-
+#include <time.h>
 /////GLobal Declarations///////////////
 GLfloat distance = 0.0;
 GLuint tex_name[3];
@@ -11,7 +12,23 @@ int n;
 unsigned char *tex_image[3] = {NULL, NULL};
 int height[3];
 int width[3];
+int images;
 
+static GLint window[2]; //// Number of windows
+
+/////Setting up camera location and colour variables/////////////////
+#define PI 3.14159265
+static float alpha = 0.0;
+int board[3][3];
+static float beta = PI/24.0;;
+/* position of camera */
+static GLdouble cpos[3];
+int ww, hh;
+/* position of light source */
+static GLfloat lpos[] = {-1.0, 0.5, -1.0, 1.0};
+/* vectors to specify material properties */
+static GLfloat none[] = {0.0, 0.0, 0.0, 1.0};
+static GLfloat white[] = {1.0, 1.0, 1.0, 0.5};
 
 ////Load bitmap image function////////////////////////
 /////////////////////////////////////////////////////
@@ -34,7 +51,7 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 			fclose(file);
 			exit(1);
 		};
-		if (header[0]!='B' || header[1]!='M') { //must be ’BM’
+		if (header[0]!='B' || header[1]!='M') { //must be Â’BMÂ’
 			printf("not a bmp file\n");
 			fclose(file);
 			exit(1);
@@ -58,7 +75,7 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 	new_image = (unsigned char *) malloc((height)*(width)*3);
 	numbytesinrow = ((3 * width + 3)/4) * 4;
 	numpadbytes = numbytesinrow - 3 * width; //need this many
-	for (i = 0; i < height; i++) {	
+	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
 			b = fgetc(file);
 			g = fgetc(file);
@@ -67,7 +84,7 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 			new_image[count++] = g;
 			new_image[count++] = b;
 		}
-		for (k = 0; k < numpadbytes; k++) //skip pad bytes at row’s end
+		for (k = 0; k < numpadbytes; k++) //skip pad bytes at rowÂ’s end
 			dum = fgetc(file);
 	}
 	fclose(file);
@@ -78,27 +95,40 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 //// End of loading image/////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-/////Setting up camera location and colour variables/////////////////
-#define PI 3.14159265
-static float alpha = 0.0;
-int board[3][3];
-static float beta = PI/24.0;;
-/* position of camera */
-static GLdouble cpos[3];
-int ww, hh;
-/* position of light source */
-static GLfloat lpos[] = {-1.0, 0.5, -1.0, 1.0};
-/* vectors to specify material properties */
-static GLfloat none[] = {0.0, 0.0, 0.0, 1.0};
-static GLfloat white[] = {1.0, 1.0, 1.0, 0.5};
-
 
 //////// Write message on to terminal ////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 static void writemessage()
 {
-	printf("\n FSAMS \n");
+    printf("######################################################\n");
+	printf("FSAMS Session Log\n");
+    printf("######################################################\n");
+	printf("Fire alarm at Floor X and Room Y is Turned on\n");
+	printf("Security alarm at Floor X and Room Y is Turned on\n");
+	printf("FSAMS will be transferred to auto mode in 2 min\n");
+
 }
+
+void  Firealarm (int PositionX, int PositionY, int Floor,bool status){ // status 1=> ON    ; 0=>OFF
+	if(status==false){
+		//load FireBMP
+	}
+}
+
+void Securityalarm (int  PositionX,int PositionY,int  Floor, bool status) {   //status 1=> ON    ; 0=> OFF
+	if(status==true){
+		//load SecurityBMP
+	}
+	
+}
+
+void exitmap (int  Floor, bool status) 		{	                            //status 1=> ON   ; 0=> OFF
+	if(status==true){
+		//load ExitBMP
+	}
+}
+
+
 
 ///// right tab menu ////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -106,32 +136,34 @@ static void writemessage()
 void rcmenu(int id)
 {
 	switch (id) {
+        
+        case 1:
+        // Load FLOOR 1
+            
+        case 2:
+            // Load FLOOR 2
+            
+            
+        case 3:
+              // Load FLOOR 3
+             
+            
+            
 	case 27: /* exit the program */
 		exit(0);
 		break;
 	default:
+        // Load FLOOR 1
+           
+          
 	break;
 	}
 }
 
-/////////////// Setting up cameras, texturing the bmp file////////////////////
-//////////////////////////////////////////////////////////////////////////////
-void init(void)
-{
-	writemessage();
-	glClearColor(0.0, 1.0, 0.0, 1.0);  //// background green colour 
-	glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);
-	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-	glEnable(GL_LIGHTING);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-	glEnable(GL_LIGHT0);
-	glPushMatrix();
-/*** generate textures *****/
-
-	glGenTextures(3, tex_name);
-/* read *.bmp files */
-	tex_image[1] = LoadBMP("floor.bmp", &width[1], &height[1]); //640*480
+/// Generate texture
+void generatetex(char* Filename,int imageid){
+    //tex_image[1] = LoadBMP(Filename, &width[1], &height[1]);
+	tex_image[1] = LoadBMP(Filename, &width[1],&height[1]);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, tex_name[1]);
 	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width[1], height[1],
@@ -143,13 +175,31 @@ void init(void)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 	glEnable(GL_TEXTURE_2D);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+	}
+
+/////////////// Setting up cameras, texturing the bmp file////////////////////
+//////////////////////////////////////////////////////////////////////////////
+void init(void)
+{
+	glClearColor(0.0, 0.0, 0.0, 1.0);  //// background green colour
+	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	glEnable(GL_LIGHTING);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+	glEnable(GL_LIGHT0);
+	glPushMatrix();
+/*** generate textures *****/
+	glGenTextures(3, tex_name);
+/* read *.bmp files */
+	generatetex("Firealert.bmp",1);
 	glPopMatrix();
   	glutPostRedisplay();
 }
 
 /////////////Bitmaps cartesian coordinates and texture values/////////////////
 void image(){
-	glEnable(GL_BLEND);	
+	glEnable(GL_BLEND);
 	glPushMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glDepthMask(GL_FALSE);
@@ -170,20 +220,19 @@ void reshape(int w, int h)
 {
 	ww=w;
 	hh=h;
-	glViewport(0, 0, ww, hh);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, (GLfloat) ww / (GLfloat) hh, 1.0, 20.0);
+	gluPerspective(90.0, (GLfloat) ww / (GLfloat) hh, 1.0, 4.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt (0*cos(alpha), 3.0*cos(alpha), 1.0, 0, 0, 0.0, 0.0, 1.0, 0.0);
+	gluLookAt (0, 1.35, 0.001, 0, 0, 0.0, 0.0, 1.0, 0.0);
 }
 
 //////////////camera position and light source position////////////////
 void display(void)
 {
+	glutSetWindow(window[0]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 /* set current light source position */
 	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
 	image();
@@ -202,8 +251,8 @@ void createmenu(void){
 
 	//adding menu items to floor sub menu
 	floormenu = glutCreateMenu(rcmenu);
-	glutAddMenuEntry("First Floor", 2);
-	glutAddMenuEntry("Second Floor",3);
+	glutAddMenuEntry("First Floor", 1);
+	glutAddMenuEntry("Second Floor",2);
 	glutAddMenuEntry("Third Floor", 3);
 
 	//adding menu items to fire sub menu
@@ -218,7 +267,7 @@ void createmenu(void){
 
 	//adding menu items to main menu
 	glutCreateMenu(rcmenu);
-	glutAddSubMenu("Floors", 2);
+	glutAddSubMenu("Floors", 1);
 	glutAddSubMenu("Fire", 2);
 	glutAddSubMenu("Security", 3);
 	glutAddMenuEntry("Cancel Alarm", 3);
@@ -228,18 +277,39 @@ void createmenu(void){
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
+void mouse(int button, int state, int x, int y)
+{
+    switch (button) {
+        case GLUT_LEFT_BUTTON:
+        if (state == GLUT_DOWN){
+        printf("Mouse position is %d,  %d\n", x,y);
+        if(glutGetModifiers() == GLUT_ACTIVE_CTRL){
+         
+                    glutPostRedisplay();}
+        }
+        break;
+
+        default:
+        break;
+    }
+}
 
 int main(int argc, char** argv)
 {
+    writemessage();
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(1020, 800);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("FSAMS");
-	createmenu();
+	glutInitWindowSize(700, 540);
+	glutInitWindowPosition(650, 100);
+	window[0]=glutCreateWindow("FSAMS");
 	init();
+	void Firealarm(int PositionX, int PositionY,int Floor,bool status);
+	void Securityalarm(int PositionX,int PositionY,int Floor,bool status);
+	void exitmap(int Floor, bool status);
+	createmenu();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
+    glutMouseFunc (mouse); 
 	glutMainLoop();
 	return 0;
 }
