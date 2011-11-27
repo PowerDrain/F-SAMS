@@ -177,6 +177,25 @@ void generatetex(char* Filename,int imageid){
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
 	}
 
+//Setimage location
+void imagelocation(int imageid, float T11,float T12,float T21,float T22,float T31,float T32,float T41,float T42,
+	float V11,float V12,float V13,float V21,float V22,float V23,float V31,float V32,float V33,float V41,float V42,float V43)
+{
+	glEnable(GL_BLEND);
+	glPushMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glDepthMask(GL_FALSE);
+	glBindTexture(GL_TEXTURE_2D, tex_name[imageid]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(T11, T12); glVertex3f(V11,V12,V13);
+	glTexCoord2f(T21, T22); glVertex3f(V21,V22,V23);
+	glTexCoord2f(T31, T32); glVertex3f(V31,V32,V33);
+	glTexCoord2f(T41, T42); glVertex3f(V41,V42,V43);
+	glEnd();
+	glDepthMask(GL_TRUE);
+	glPopMatrix();
+}
+
 /////////////// Setting up cameras, texturing the bmp file////////////////////
 //////////////////////////////////////////////////////////////////////////////
 void init(void)
@@ -192,26 +211,9 @@ void init(void)
 /*** generate textures *****/
 	glGenTextures(3, tex_name);
 /* read *.bmp files */
-	generatetex("Firealert.bmp",1);
+	generatetex("Floor.bmp",1);
 	glPopMatrix();
   	glutPostRedisplay();
-}
-
-/////////////Bitmaps cartesian coordinates and texture values/////////////////
-void image(){
-	glEnable(GL_BLEND);
-	glPushMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glDepthMask(GL_FALSE);
-	glBindTexture(GL_TEXTURE_2D, tex_name[1]);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 0.0); glVertex3f(-0.81,0.31,0.62);
-	glTexCoord2f(1, 0.0); glVertex3f(0.81,0.31,0.62);
-	glTexCoord2f(1, 1); glVertex3f(0.81,0.31,-0.99);
-	glTexCoord2f(0.0, 1); glVertex3f(-0.81,0.31,-0.99);
-	glEnd();
-	glDepthMask(GL_TRUE);
-	glPopMatrix();
 }
 
 
@@ -235,7 +237,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 /* set current light source position */
 	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-	image();
+	imagelocation(1,0,0,1,0,1,1,0,1,-0.81,0.31,0.62,0.81,0.31,0.62,0.81,0.31,-0.99,-0.81,0.31,-0.99);
 	glPopMatrix();
 	glutPostRedisplay();
 	glFlush();
