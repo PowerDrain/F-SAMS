@@ -296,82 +296,118 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
-//Floor 1             //Default Floor
-//Add Floor
-//imagelocation(imageid, location..................................)
+//Final rcmenu(){
+  //switch(id){
+    //case:1 Floor1
+        //Add Floor1
+        //imagelocation(imageid, location..................................)
 
-//if Firealarm==1
-//Add  Fire Alarm
-//imagelocation(imageid, location..................................)
+    //case:2 SecurityDrill Floor1
+        //if SecurityAlarm==1
+        //get Zone location
+        //Add Security Alarm
+        //imagelocation(imageid, location..................................)
 
-//if SecurityAlarm==1
-//Add Security Alarm
-//imagelocation(imageid, location..................................)
+    //case:3 FireDrill Floor1
+        //if FireDrill==1
+        //get Zone location
+        //Add Fire Drill
+        //imagelocation(imageid, location..................................)
 
-//if FireDrill==1
-//Add Fire Drill
-//imagelocation(imageid, location..................................)
+    //case:4 FireAlarm Floor1
+        //if Firealarm==1
+        //Add  Fire Alarm
+        //imagelocation(imageid, location..................................)
 
-//if Security Drill==1
-//Add Security Drill
-//imagelocation(imageid, location..................................)
+    //case:5 SecurityAlarm Floor1
+        //if Security Drill==1
+        //get Zone Location
+        //imagelocation(imageid, location..................................) //Add Security Drill
 
-//if FireAlarm==1
-//Add Exitmap
-//imagelocation(imageid, location..................................)
+    //case:6 Exitmap Floor1
+        //if FireAlarm==1
+        //get Zone location
+        //Add Exitmap
+        //imagelocation(imageid, location..................................)
 
+    //case:7 Floor2
+        // Run this if Floor 2 is selected from right menu
+        //Floor 2
+        //Add Floor
+        //imagelocation(imageid, location..................................)
 
+    //case:8 SecurityDrill Floor 2
+        //if Security Drill==1
+        //get zonelocation
+        //Add Security Drill
+        //imagelocation(imageid, location..................................)
 
-// Run this if Floor 2 is selected from right menu
-//Floor 2
-//Add Floor
-//imagelocation(imageid, location..................................)
+    //case:9 FireDrill Floor 2
+        //if FireDrill==1
+        //get Zone location
+        //Add Fire Drill
+        //imagelocation(imageid, location..................................)
 
-//if Firealarm==1
-//Add  Fire Alarm
-//imagelocation(imageid, location..................................)
+    //case:10 FireAlarm Floor2
+        //if Firealarm==1
+        //get Zone location
+        //Add  Fire Alarm
+        //imagelocation(imageid, location..................................)
 
-//if SecurityAlarm==1
-//Add Security Alarm
-//imagelocation(imageid, location..................................)
+    //case:11 SecurityAlarm Floor2
+        //if SecurityAlarm==1
+        //get Zone location
+        //Add Security Alarm
+        //imagelocation(imageid, location..................................)
 
-//if FireDrill==1
-//Add Fire Drill
-//imagelocation(imageid, location..................................)
+    //case:12 Exitmap Floor2
+        //if FireAlarm==1
+        //get zone location
+        //Add Exitmap
+        //imagelocation(imageid, location..................................)
 
-//if Security Drill==1
-//Add Security Drill
-//imagelocation(imageid, location..................................)
+    //case:13 Floor3
+        // Run this if Floor 3 is selected from right menu
+        //Floor 3
+        //Add Floor
+        //imagelocation(imageid, location..................................)
 
-//if FireAlarm==1
-//Add Exitmap
-//imagelocation(imageid, location..................................)
+    //case:14 SecurityDrill Floor3
+        //if Security Drill==1
+        //get zone location
+        //Add Security Drill
+        //imagelocation(imageid, location..................................)
 
+    //case:15 FireDrill Floor3
+        //if FireDrill==1
+        //get zone location
+        //Add Fire Drill
+        //imagelocation(imageid, location..................................)
 
-// Run this if Floor 3 is selected from right menu
-//Floor 3
-//Add Floor
-//imagelocation(imageid, location..................................)
+    //case:16 FireAlarm Floor1
+        //if Firealarm==1
+        //get zonelocation
+        //Add  Fire Alarm
+        //imagelocation(imageid, location..................................)
 
-//if Firealarm==1
-//Add  Fire Alarm
-//imagelocation(imageid, location..................................)
+    //case:17 SecurityAlarm Floor1
+        //if SecurityAlarm==1
+        //get zonelocation
+        //Add Security Alarm
+        //imagelocation(imageid, location..................................)
 
-//if SecurityAlarm==1
-//Add Security Alarm
-//imagelocation(imageid, location..................................)
+    //case:18 Exitmap Floor1
+        //if FireAlarm==1
+        //get zone location
+        //Add Exitmap
+        //imagelocation(imageid, location..................................)
 
-//if FireDrill==1
-//Add Fire Drill
-//imagelocation(imageid, location..................................)
-
-//if Security Drill==1
-//Add Security Drill
-//imagelocation(imageid, location..................................)
-
-//if FireAlarm==1
-//Add Exitmap
-//imagelocation(imageid, location..................................)
+    //default:
+        //Floor 1             //Default Floor
+        //Add Floor1
+        //imagelocation(imageid, location..................................)
+    //}
+//}
 
 
 int main(int argc, char** argv)
