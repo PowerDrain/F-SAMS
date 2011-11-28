@@ -200,7 +200,7 @@ void imagelocation(int imageid, float T11,float T12,float T21,float T22,float T3
 //////////////////////////////////////////////////////////////////////////////
 void init(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 1.0);  //// background green colour
+	glClearColor(0.97, 0.97, 0.97, 1.0);  //// background white colour
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -295,6 +295,84 @@ void mouse(int button, int state, int x, int y)
         break;
     }
 }
+
+//Floor 1             //Default Floor
+//Add Floor
+//imagelocation(imageid, location..................................)
+
+//if Firealarm==1
+//Add  Fire Alarm
+//imagelocation(imageid, location..................................)
+
+//if SecurityAlarm==1
+//Add Security Alarm
+//imagelocation(imageid, location..................................)
+
+//if FireDrill==1
+//Add Fire Drill
+//imagelocation(imageid, location..................................)
+
+//if Security Drill==1
+//Add Security Drill
+//imagelocation(imageid, location..................................)
+
+//if FireAlarm==1
+//Add Exitmap
+//imagelocation(imageid, location..................................)
+
+
+
+// Run this if Floor 2 is selected from right menu
+//Floor 2
+//Add Floor
+//imagelocation(imageid, location..................................)
+
+//if Firealarm==1
+//Add  Fire Alarm
+//imagelocation(imageid, location..................................)
+
+//if SecurityAlarm==1
+//Add Security Alarm
+//imagelocation(imageid, location..................................)
+
+//if FireDrill==1
+//Add Fire Drill
+//imagelocation(imageid, location..................................)
+
+//if Security Drill==1
+//Add Security Drill
+//imagelocation(imageid, location..................................)
+
+//if FireAlarm==1
+//Add Exitmap
+//imagelocation(imageid, location..................................)
+
+
+// Run this if Floor 3 is selected from right menu
+//Floor 3
+//Add Floor
+//imagelocation(imageid, location..................................)
+
+//if Firealarm==1
+//Add  Fire Alarm
+//imagelocation(imageid, location..................................)
+
+//if SecurityAlarm==1
+//Add Security Alarm
+//imagelocation(imageid, location..................................)
+
+//if FireDrill==1
+//Add Fire Drill
+//imagelocation(imageid, location..................................)
+
+//if Security Drill==1
+//Add Security Drill
+//imagelocation(imageid, location..................................)
+
+//if FireAlarm==1
+//Add Exitmap
+//imagelocation(imageid, location..................................)
+
 
 int main(int argc, char** argv)
 {
