@@ -1,4 +1,4 @@
-#include <Windows.h>
+//#include <Windows.h>
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
@@ -100,9 +100,9 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 //////////////////////////////////////////////////////////////////////
 static void writemessage()
 {
-    printf("######################################################\n");
+        printf("######################################################\n");
 	printf("FSAMS Session Log\n");
-    printf("######################################################\n");
+        printf("######################################################\n");
 	printf("Fire alarm at Floor X and Room Y is Turned on\n");
 	printf("Security alarm at Floor X and Room Y is Turned on\n");
 	printf("FSAMS will be transferred to auto mode in 2 min\n");
@@ -119,7 +119,7 @@ void Securityalarm (int  PositionX,int PositionY,int  Floor, bool status) {   //
 	if(status==true){
 		//load SecurityBMP
 	}
-	
+
 }
 
 void exitmap (int  Floor, bool status) 		{	                            //status 1=> ON   ; 0=> OFF
@@ -136,26 +136,26 @@ void exitmap (int  Floor, bool status) 		{	                            //status 
 void rcmenu(int id)
 {
 	switch (id) {
-        
+
         case 1:
         // Load FLOOR 1
-            
+
         case 2:
             // Load FLOOR 2
-            
-            
+
+
         case 3:
               // Load FLOOR 3
-             
-            
-            
+
+
+
 	case 27: /* exit the program */
 		exit(0);
 		break;
 	default:
         // Load FLOOR 1
-           
-          
+
+
 	break;
 	}
 }
@@ -211,7 +211,7 @@ void init(void)
 /*** generate textures *****/
 	glGenTextures(3, tex_name);
 /* read *.bmp files */
-	generatetex("Floor.bmp",1);
+	generatetex("floor1.bmp",1);
 	glPopMatrix();
   	glutPostRedisplay();
 }
@@ -235,9 +235,10 @@ void display(void)
 {
 	glutSetWindow(window[0]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-/* set current light source position */
+        /* set current light source position */
 	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-	imagelocation(1,0,0,1,0,1,1,0,1,-0.81,0.31,0.62,0.81,0.31,0.62,0.81,0.31,-0.99,-0.81,0.31,-0.99);
+        // Set image size
+	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	glPopMatrix();
 	glutPostRedisplay();
 	glFlush();
@@ -286,7 +287,6 @@ void mouse(int button, int state, int x, int y)
         if (state == GLUT_DOWN){
         printf("Mouse position is %d,  %d\n", x,y);
         if(glutGetModifiers() == GLUT_ACTIVE_CTRL){
-         
                     glutPostRedisplay();}
         }
         break;
@@ -311,7 +311,7 @@ int main(int argc, char** argv)
 	createmenu();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-    glutMouseFunc (mouse); 
+        glutMouseFunc(mouse);
 	glutMainLoop();
 	return 0;
 }
