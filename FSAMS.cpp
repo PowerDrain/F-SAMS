@@ -1,4 +1,4 @@
-//#include <Windows.h>
+//#include <Windows.h>  // Donot need this if we compile through LINUX
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
