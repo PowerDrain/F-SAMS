@@ -1,4 +1,5 @@
 //#include <Windows.h>  // Donot need this if we compile through LINUX
+#define GLUT_DISABLE_ATEXIT_HACK
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
