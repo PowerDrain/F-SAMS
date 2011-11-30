@@ -1,5 +1,5 @@
-//#include <Windows.h>  // Donot need this if we compile through LINUX
 #define GLUT_DISABLE_ATEXIT_HACK
+#include <Windows.h>  // Donot need this if we compile through LINUX
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <math.h>
@@ -101,9 +101,9 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 //////////////////////////////////////////////////////////////////////
 static void writemessage()
 {
-        printf("######################################################\n");
+    printf("######################################################\n");
 	printf("FSAMS Session Log\n");
-        printf("######################################################\n");
+    printf("######################################################\n");
 	printf("Fire alarm at Floor X and Room Y is Turned on\n");
 	printf("Security alarm at Floor X and Room Y is Turned on\n");
 	printf("FSAMS will be transferred to auto mode in 2 min\n");
@@ -163,12 +163,11 @@ void rcmenu(int id)
 
 /// Generate texture
 void generatetex(char* Filename,int imageid){
-    //tex_image[1] = LoadBMP(Filename, &width[1], &height[1]);
-	tex_image[1] = LoadBMP(Filename, &width[1],&height[1]);
+    tex_image[imageid] = LoadBMP(Filename, &width[1],&height[1]);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, tex_name[1]);
+	glBindTexture(GL_TEXTURE_2D, tex_name[imageid]);
 	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width[1], height[1],
-	GL_RGB, GL_UNSIGNED_BYTE, tex_image[1]);
+	GL_RGB, GL_UNSIGNED_BYTE, tex_image[imageid]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -212,7 +211,8 @@ void init(void)
 /*** generate textures *****/
 	glGenTextures(3, tex_name);
 /* read *.bmp files */
-	generatetex("floor1.bmp",1);
+	generatetex("floor.bmp",1);
+	generatetex("firealert.bmp",0);
 	glPopMatrix();
   	glutPostRedisplay();
 }
@@ -223,6 +223,7 @@ void reshape(int w, int h)
 {
 	ww=w;
 	hh=h;
+	glViewport(0, 0, ww, hh);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(90.0, (GLfloat) ww / (GLfloat) hh, 1.0, 4.0);
@@ -240,6 +241,7 @@ void display(void)
 	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
         // Set image size
 	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	imagelocation(1,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
 	glPopMatrix();
 	glutPostRedisplay();
 	glFlush();
@@ -416,17 +418,14 @@ int main(int argc, char** argv)
     writemessage();
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(700, 540);
-	glutInitWindowPosition(650, 100);
+	glutInitWindowSize(650, 500);
+	glutInitWindowPosition(700, 0);
 	window[0]=glutCreateWindow("FSAMS");
 	init();
-	void Firealarm(int PositionX, int PositionY,int Floor,bool status);
-	void Securityalarm(int PositionX,int PositionY,int Floor,bool status);
-	void exitmap(int Floor, bool status);
 	createmenu();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-        glutMouseFunc(mouse);
+    glutMouseFunc(mouse);
 	glutMainLoop();
 	return 0;
 }
