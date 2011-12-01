@@ -6,10 +6,12 @@ using namespace std;
 int main(int argc, char** argv)
 {
 	Control ctrl;
+	ctrl.initBldg();
 
-	cout << ctrl.fire_event(1) << endl;
+	ctrl.fire_test_event(4);
 
 	getchar();
 
 	return 0;
 }
+ 

@@ -1,11 +1,42 @@
 #include "Control.h"
 
-#import "msxml6.dll"
-
-Control::Control() { }
+// DEFAULT CONSTRUCTOR
+Control::Control() {
+	// Initialize messaging
+	msg = Messaging::Messaging();
 	
-// Public control methods
-string Control::fire_event(int zoneID) {
+	// Initialize database
+	db = new Database("Database.sqlite");
+	//db->query("CREATE TABLE floor (id INTEGER PRIMARY KEY, name TEXT, createDt INTEGER);");
+	//db->query("DROP TABLE floor;");
+}
+
+// DEFAULT DESTRUCTOR
+Control::~Control() {
+	db->close();
+}
+
+// Inialize the building layout
+void Control::initBldg() {
+
+	/* Floor information [DATABASE ALREADY CONTAINS THIS INFORMATION -- DO NOT UNCOMMENT!]
+	db->query("INSERT INTO floor (id, name, createDt) VALUES (1, 'Floor 1', datetime('now'));");
+	db->query("INSERT INTO floor (id, name, createDt) VALUES (2, 'Floor 2', datetime('now'));");
+	db->query("INSERT INTO floor (id, name, createDt) VALUES (3, 'Floor 3', datetime('now'));");
+	*/
+
+	//db->query("UPDATE floor SET createDt = datetime('now') WHERE id = 3;");
+
+	vector<vector<string> > result = db->query("SELECT id, name, datetime(createDt) FROM floor;");
+	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+	{
+		vector<string> row = *it;
+		cout << "Values: (id=" << row.at(0) << ", name=" << row.at(1) << ", createDt=" << row.at(2) << ")" << endl;
+	}
+}
+	
+// PUBLIC CONTROL METHODS
+void Control::fire_event(int zoneID) {
 
 	string al_type = "fire";
 		
@@ -44,22 +75,23 @@ string Control::fire_event(int zoneID) {
 	//Check for people in the zone
 	find_peps(zoneID);
 		
-	syslog("Timestamp: Fire event triggered in zone X");
+	//syslog("Timestamp: Fire event triggered in zone X");
 	//Will will write this data to the session log, this does not
 	//have to be a return String to the UI.
-	return ("Fire event triggered, system responding. . .");
+	
+	//return ("Fire event triggered, system responding. . .");
 }
 	
-string Control::fire_test_event(int zoneID) {
+void Control::fire_test_event(int zoneID) {
 		
-	//Activating Audible Alarm
+	// Activate Audible Alarm
 	audible_alarm(zoneID);
 		
-	//Activating Directional Indicators
+	// Activate Directional Indicators
 	dir_indicator(zoneID);
-		
-	syslog("Timestamp: Fire Test triggered in zone X");
-	return ("Fire Test triggered, testing system. . .");
+
+	// Create log information
+	syslog(msg.FIRE_TEST_EVENT + zoneString(zoneID) + msg.ELLIPSIS);
 }
 	
 string Control::security_event(int zoneID){
@@ -88,20 +120,20 @@ string Control::security_event(int zoneID){
 	//notify athorities
 	call_cops();
 		
-	syslog("Timestamp: Security event triggered in zone X");
+	//syslog("Timestamp: Security event triggered in zone X");
 	return ("Security event triggered, system responding. . .");
 }
 	
-string Control::security_test_event(int zoneID){
+void Control::security_test_event(int zoneID){
 		
-	//Activating Audible Alarm
+	// Activating Audible Alarm
 	audible_alarm(zoneID);
 		
-	//Activating Directional Indicators
+	// Activating Directional Indicators
 	lock_doors(zoneID);
-		
-	syslog("Timestamp: Security Test triggered in zone X");
-	return ("Security Test triggered, testing system. . .");
+
+	// Create log information	
+	syslog(msg.SECURITY_TEST_EVENT + zoneString(zoneID) + msg.ELLIPSIS);
 }
 	
 //Turns off all alarms in zone
@@ -113,7 +145,7 @@ void Control::turn_off(int zoneID, string password){
 		sprink_off(zoneID);
 		power_on(zoneID);
 		unlock(zoneID);
-		syslog("Timestamp: Alarm resloved in zone X");
+		//syslog("Timestamp: Alarm resloved in zone X");
 	} else {
 		//error, password is incorrect
 	}
@@ -128,22 +160,28 @@ void Control::turn_off(int zoneID, string password, string alarm_type){
 		sprink_off(zoneID);
 		power_on(zoneID);
 		unlock(zoneID);
-		syslog("Timestamp: Alarm resloved in zone X");
+		//syslog("Timestamp: Alarm resloved in zone X");
 	} else {
 		//error, password is incorrect
 	}
 }
 	
-// Private methods
+// PRIVATE METHODS
 void Control::audible_alarm(int zoneID){
-	//Activate alarm in zone passed
+	// Turn on audio alarm
+
+	// Create log information		
+	syslog(msg.ACTIVATE_AUDIBLE_ALARM + zoneString(zoneID) + msg.ELLIPSIS);
 }
 	
 void Control::dir_indicator(int zoneID){
-	//Turn on directional indicators in zone passed
+	// Turn on directional indicators
+
+	// Create log information		
+	syslog(msg.ACTIVATE_DIRECTIONAL_INDICATORS + zoneString(zoneID) + msg.ELLIPSIS);
 }
 	
-bool Control::only_alarm(string alarm_type){
+bool Control::only_alarm(string alarm_type) {
 	bool retVal = true;
 	//Check data base for existing alarm of this type.
 	//If another alarm exists then retVal = false;
@@ -177,12 +215,6 @@ void Control::find_peps(int zoneID){
 	//else
 	power_off(zoneID);
 	sprink_on(zoneID);
-}
-	
-void Control::log_alarm(int zoneID, string alarm_type){
-	//Write to database the zone and alarm type
-	//so the system can check if more than one alarm
-	//is triggered at a time
 }
 	
 // Private methods used to turn off system
@@ -222,6 +254,19 @@ void Control::unlock(int zoneID){
 	//Unlocks the doors in zone passed
 }
 	
-void Control::syslog(string event){
-	//Writes event to system log
+// SYSTEM LOGGING
+void Control::syslog(string toConsole) {
+	std::cout << toConsole << std::endl;
+}
+	
+void Control::log_alarm(int zoneID, string alarm_type) {
+	//Write to database the zone and alarm type
+	//so the system can check if more than one alarm
+	//is triggered at a time
+}
+
+string Control::zoneString(int zoneID) {
+	stringstream ssLog;
+	ssLog << zoneID;
+	return ssLog.str();
 }
