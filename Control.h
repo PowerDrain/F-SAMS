@@ -22,36 +22,41 @@ public:
 	// PUBLIC CONTROL METHODS
 	void initBldg();
 	void fire_event(int);
-	void fire_test_event(int);
+	void fire_test_event(int); // DONE!
 	string security_event(int zoneID);
-	void security_test_event(int);
-	void turn_off(int zoneID, string password);
-	void turn_off(int zoneID, string password, string alarm_type);
+	void security_test_event(int); // DONE!
+	void turn_off(int zoneID, string password); // DONE!
+	void turn_off(int zoneID, string password, string alarm_type); // DONE!
 
 private:
 	// PRIVATE METHODS
-	void audible_alarm(int);
-	void dir_indicator(int);
-	bool only_alarm(string alarm_type);
-	void lock_doors(int zoneID);
-	void call_cops();
-	void call_FD();
-	void sprink_on(int zoneID);
-	void power_off(int zoneID);
+	bool only_alarm(string alarm_type); // DONE!
+	void call_cops(); // DONE!
+	void call_FD(); // DONE!
 	void find_peps(int zoneID);
-	// Private methods used to turn off system
-	bool password_ok(string password);
-	void disable_alarm(int zoneID);
-	void disable_alarm(int zoneID, string alarm_type);
-	void disable_audio_alarm(int zoneID);
-	void deact_directional(int zoneID);
-	void sprink_off(int zoneID);
-	void power_on(int zoneID);
-	void unlock(int zoneID);
+	bool password_ok(string password); // DONE!
+	void disable_alarm(int zoneID); // DONE!
+	void disable_alarm(int zoneID, string alarm_type); // DONE!
+
+	void audible_alarm(int); // DONE!
+	void disable_audio_alarm(int zoneID); // DONE!
+
+	void dir_indicator(int); // DONE!
+	void deact_directional(int zoneID); // DONE!
+
+	void sprink_on(int zoneID); // DONE!
+	void sprink_off(int zoneID); // DONE!
+
+	void power_on(int zoneID); // DONE!
+	void power_off(int zoneID); // DONE!
+
+	void lock_doors(int zoneID); // DONE!
+	void unlock_doors(int zoneID); // DONE!
+
 	// SYSTEM LOGGING
-	void syslog(string);
-	void log_alarm(int zoneID, string alarm_type);
-	string zoneString(int);
+	void syslog(string); // DONE!
+	void log_alarm(int zoneID, string alarm_type); // DONE!
+	string zoneString(int); // DONE!
 
 };
 
