@@ -364,6 +364,7 @@ void drawZone(int zoneId, int alarmtype){
 	else if(alarmtype == 2){
 		glColor4f(0.0, 0.0, 1.0, 0.5);
 	}
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	switch (zoneId){
 	case 1:
 		glBegin(GL_POLYGON);
