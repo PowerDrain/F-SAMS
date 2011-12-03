@@ -299,6 +299,173 @@ void mouse(int button, int state, int x, int y)
     }
 }
 
+int checkZone(int mousex, int mousey){
+	//test for floor shown on UI
+	//if first floor is shown
+	if(((mousex >= 36 && mousex <= 272) && (mousey >= 179 && mousey <= 482)) || 
+	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousy <=179))){
+		return 1;
+	}
+	else if (((mousex >= 272 && mousex <= 567) && (mousey >= 179 && mousey <= 482)) ||
+	           ((mousex >= 567 && mousex <= 662) && (mousey >= 295 && mousey <= 482)) ||
+	           ((mousex >= 657 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+			return 2;
+	}
+	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
+	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 295))){
+			return 3;
+	}
+	else{
+		return 0;
+	}
+
+	//if second floor is shown
+	if(((mousex >= 36 && mousex <= 466) && (mousey >= 179 && mousey <= 482)) ||
+	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
+	   ((mousex >= 466 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
+	   ((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+		return 4;
+	}
+	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
+	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 359)) ||
+	           ((mousex >= 466 && mousex <= 662) && (mousey >= 359 && mousey <= 482))){
+			return 5;
+	}
+	else{
+		return 0;
+	}
+
+	//if third floor is shown
+	if((mousex >= 36 && mousex <= 466) && (mousey >= 359 && mousey <= 482)){
+		return 6;
+	}
+	else if(((mousex >= 36 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
+	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
+	   ((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+		return 7;
+	}
+	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
+	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 359)) ||
+	           ((mousex >= 466 && mousex <= 662) && (mousey >= 359 && mousey <= 482))){
+			return 8;
+	}
+	else{
+		return 0;
+	}
+}
+
+void drawZone(int zoneId, int alarmtype){
+	if(alarmtype == 1){
+		glColor4f(1.0, 0.0, 0.0, 0.5);
+	}
+	else if(alarmtype == 2){
+		glColor4f(0.0, 0.0, 1.0, 0.5);
+	}
+	switch (zoneId){
+	case 1:
+		glBegin(GL_POLYGON);
+			glVertex2i(36,56);
+			glVertex2i(195,56);
+			glVertex2i(195,179);
+			glVertex2i(272,179);
+			glVertex2i(272,482);
+			glVertex2i(36,482);
+		glEnd();
+		break;
+	case 2:
+		glBegin(GL_POLYGON);
+			glVertex2i(272,482);
+			glVertex2i(272,179);
+			glVertex2i(605,179);
+			glVertex2i(605,220);
+			glVertex2i(567,220);
+			glVertex2i(567,295);
+			glVertex2i(662,295);
+			glVertex2i(662,482);
+		glEnd();
+		break;
+	case 3:
+		glBegin(GL_POLYGON);
+			glVertex2i(195,56);
+			glVertex2i(662, 56);
+			glVertex2i(662, 295);
+			glVertex2i(567, 295);
+			glVertex2i(567, 220);
+			glVertex2i(605, 220);
+			glVertex2i(605, 179);
+			glVertex2i(195,179);
+		glEnd();
+		break;
+	case 4:
+		glBegin(GL_POLYGON);
+			glVertex2i(36,56);
+			glVertex2i(195,56);
+			glVertex2i(195,179);
+			glVertex2i(605,179);
+			glVertex2i(605,220);
+			glVertex2i(567, 220);
+			glVertex2i(567,359);
+			glVertex2i(466, 359);
+			glVertex2i(466, 482);
+			glVertex2i(36,482);
+		glEnd();
+		break;
+	case 5:
+		glBegin(GL_POLYGON);
+			glVertex2i(195,56);
+			glVertex2i(662,56);
+			glVertex2i(662,482);
+			glVertex2i(466,482);
+			glVertex2i(466,359);
+			glVertex2i(567,359);
+			glVertex2i(567,220);
+			glVertex2i(605,220);
+			glVertex2i(605,179);
+			glVertex2i(195,179);
+		glEnd();
+		break;
+	case 6:
+		glBegin(GL_POLYGON);
+			glVertex2i(36,482);
+			glVertex2i(36,359);
+			glVertex2i(466,359);
+			glVertex2i(466,482);
+		glEnd();
+		break;
+	case 7:
+		glBegin(GL_POLYGON);
+			glVertex2i(36,56);
+			glVertex2i(195,56);
+			glVertex2i(195,179);
+			glVertex2i(605,179);
+			glVertex2i(605,220);
+			glVertex2i(567, 220);
+			glVertex2i(567,359);
+			glVertex2i(36,359);
+		glEnd();
+		break;
+	case 8:
+		glBegin(GL_POLYGON);
+			glVertex2i(195,56);
+			glVertex2i(662,56);
+			glVertex2i(662,482);
+			glVertex2i(466,482);
+			glVertex2i(466,359);
+			glVertex2i(567,359);
+			glVertex2i(567,220);
+			glVertex2i(605,220);
+			glVertex2i(605,179);
+			glVertex2i(195,179);
+		glEnd();
+		break;
+	default:
+		break;
+	}
+}
+
 //Final rcmenu(){
   //switch(id){
     //case:1 Floor1
