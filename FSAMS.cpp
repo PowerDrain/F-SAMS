@@ -5,6 +5,11 @@
 #include <math.h>
 #include <stdio.h>
 #include <time.h>
+#include <io.h>
+
+void drawZone(int, int);
+void Display();
+void rcmenu(int);
 /////GLobal Declarations///////////////
 GLfloat distance = 0.0;
 GLuint tex_name[3];
@@ -15,7 +20,7 @@ int height[3];
 int width[3];
 int images;
 
-static GLint window[2]; //// Number of windows
+static GLint window[4]; //// Number of windows
 
 /////Setting up camera location and colour variables/////////////////
 #define PI 3.14159265
@@ -52,7 +57,7 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 			fclose(file);
 			exit(1);
 		};
-		if (header[0]!='B' || header[1]!='M') { //must be BM
+		if (header[0]!='B' || header[1]!='M') { //must be Â’BMÂ’
 			printf("not a bmp file\n");
 			fclose(file);
 			exit(1);
@@ -85,7 +90,7 @@ unsigned char *LoadBMP(char file_name[], int *w, int *h)
 			new_image[count++] = g;
 			new_image[count++] = b;
 		}
-		for (k = 0; k < numpadbytes; k++) //skip pad bytes at rows end
+		for (k = 0; k < numpadbytes; k++) //skip pad bytes at rowÂ’s end
 			dum = fgetc(file);
 	}
 	fclose(file);
@@ -134,32 +139,7 @@ void exitmap (int  Floor, bool status) 		{	                            //status 
 ///// right tab menu ////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-void rcmenu(int id)
-{
-	switch (id) {
 
-        case 1:
-        // Load FLOOR 1
-
-        case 2:
-            // Load FLOOR 2
-
-
-        case 3:
-              // Load FLOOR 3
-
-
-
-	case 27: /* exit the program */
-		exit(0);
-		break;
-	default:
-        // Load FLOOR 1
-
-
-	break;
-	}
-}
 
 /// Generate texture
 void generatetex(char* Filename,int imageid){
@@ -204,15 +184,13 @@ void init(void)
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-	glEnable(GL_LIGHTING);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-	glEnable(GL_LIGHT0);
 	glPushMatrix();
 /*** generate textures *****/
 	glGenTextures(3, tex_name);
 /* read *.bmp files */
-	generatetex("floor.bmp",1);
-	generatetex("firealert.bmp",0);
+	generatetex("floor1.bmp",1);
+	generatetex("SecondFloorPeople.bmp",2);
+	generatetex("ThirdFloorNoPeople.bmp",3);
 	glPopMatrix();
   	glutPostRedisplay();
 }
@@ -230,59 +208,51 @@ void reshape(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt (0, 1.35, 0.001, 0, 0, 0.0, 0.0, 1.0, 0.0);
+
+
 }
 
 //////////////camera position and light source position////////////////
 void display(void)
 {
-	glutSetWindow(window[0]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         /* set current light source position */
 	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
         // Set image size
 	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
-	imagelocation(1,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
 	glPopMatrix();
 	glutPostRedisplay();
 	glFlush();
 	glutSwapBuffers();
 }
 
-//////////////Right click menu /////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-void createmenu(void){
-	int floormenu;  //floor sub menu
-	int firemenu;  //fire sub menu
-	int securitymenu;  //security sub menu
-
-	//adding menu items to floor sub menu
-	floormenu = glutCreateMenu(rcmenu);
-	glutAddMenuEntry("First Floor", 1);
-	glutAddMenuEntry("Second Floor",2);
-	glutAddMenuEntry("Third Floor", 3);
-
-	//adding menu items to fire sub menu
-	firemenu = glutCreateMenu(rcmenu);
-	glutAddMenuEntry("Fire Alarm", 3);
-	glutAddMenuEntry("Fire Drill", 2);
-
-	//adding menu items to security sub menu
-	securitymenu = glutCreateMenu(rcmenu);
-	glutAddMenuEntry("Security Alarm", 2);
-	glutAddMenuEntry("Security Drill", 3);
-
-	//adding menu items to main menu
-	glutCreateMenu(rcmenu);
-	glutAddSubMenu("Floors", 1);
-	glutAddSubMenu("Fire", 2);
-	glutAddSubMenu("Security", 3);
-	glutAddMenuEntry("Cancel Alarm", 3);
-	glutAddMenuEntry("Exit", 27);
-
-	//attaching menu to mouse right click
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+void Display(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        /* set current light source position */
+	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+        // Set image size
+	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	//imagelocation(2,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
+	glPopMatrix();
+	glutPostRedisplay();
+	glFlush();
+	glutSwapBuffers();
 }
 
+void Display1(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        /* set current light source position */
+	glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+        // Set image size
+	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	//imagelocation(2,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
+	glPopMatrix();
+	glutPostRedisplay();
+	glFlush();
+	glutSwapBuffers();
+}
 void mouse(int button, int state, int x, int y)
 {
     switch (button) {
@@ -303,7 +273,7 @@ int checkZone(int mousex, int mousey){
 	//test for floor shown on UI
 	//if first floor is shown
 	if(((mousex >= 36 && mousex <= 272) && (mousey >= 179 && mousey <= 482)) || 
-	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousy <=179))){
+	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <=179))){
 		return 1;
 	}
 	else if (((mousex >= 272 && mousex <= 567) && (mousey >= 179 && mousey <= 482)) ||
@@ -358,6 +328,7 @@ int checkZone(int mousex, int mousey){
 }
 
 void drawZone(int zoneId, int alarmtype){
+	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	if(alarmtype == 1){
 		glColor4f(1.0, 0.0, 0.0, 0.5);
 	}
@@ -367,6 +338,8 @@ void drawZone(int zoneId, int alarmtype){
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	switch (zoneId){
 	case 1:
+		printf("polygon has been drawn");
+		//imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 		glBegin(GL_POLYGON);
 			glVertex2i(36,56);
 			glVertex2i(195,56);
@@ -375,6 +348,7 @@ void drawZone(int zoneId, int alarmtype){
 			glVertex2i(272,482);
 			glVertex2i(36,482);
 		glEnd();
+		glFlush();
 		break;
 	case 2:
 		glBegin(GL_POLYGON);
@@ -435,6 +409,8 @@ void drawZone(int zoneId, int alarmtype){
 			glVertex2i(466,359);
 			glVertex2i(466,482);
 		glEnd();
+		glutPostRedisplay();
+		glFlush();
 		break;
 	case 7:
 		glBegin(GL_POLYGON);
@@ -581,6 +557,78 @@ void drawZone(int zoneId, int alarmtype){
 //}
 
 
+//////////////Right click menu /////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+void createmenu(void){
+	int floormenu;  //floor sub menu
+	int firemenu;  //fire sub menu
+	int securitymenu;  //security sub menu
+
+	//adding menu items to floor sub menu
+	floormenu = glutCreateMenu(rcmenu);
+	glutAddMenuEntry("First Floor", 1);
+	glutAddMenuEntry("Second Floor",2);
+	glutAddMenuEntry("Third Floor", 3);
+
+	//adding menu items to fire sub menu
+	firemenu = glutCreateMenu(rcmenu);
+	glutAddMenuEntry("Fire Alarm", 4);
+	glutAddMenuEntry("Fire Drill", 5);
+
+	//adding menu items to security sub menu
+	securitymenu = glutCreateMenu(rcmenu);
+	glutAddMenuEntry("Security Alarm", 6);
+	glutAddMenuEntry("Security Drill", 7);
+
+	//adding menu items to main menu
+	glutCreateMenu(rcmenu);
+	glutAddSubMenu("Floors", 1);
+	glutAddSubMenu("Fire", 2);
+	glutAddSubMenu("Security", 3);
+	glutAddMenuEntry("Cancel Alarm", 3);
+	glutAddMenuEntry("Exit", 27);
+
+	//attaching menu to mouse right click
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void rcmenu(int id)
+{
+	switch (id) {
+
+        case 1:
+				glutSetWindow(window[1]);
+				glutPopWindow();
+				glutPopWindow();
+		break;
+
+        case 2:
+			    glutSetWindow(window[2]);
+				glutPopWindow();
+				glutPopWindow();
+			break;
+
+
+        case 3:
+            glutSetWindow(window[3]);
+			glutPopWindow();
+			glutPopWindow();
+			break;
+
+
+
+	case 27: /* exit the program */
+		exit(0);
+		break;
+	default:
+        glutSetWindow(window[1]);
+		glutPopWindow();
+		glutPopWindow();
+		break;
+	}
+}
+
+
 int main(int argc, char** argv)
 {
     writemessage();
@@ -589,11 +637,24 @@ int main(int argc, char** argv)
 	glutInitWindowSize(650, 500);
 	glutInitWindowPosition(700, 0);
 	window[0]=glutCreateWindow("FSAMS");
+	window[1] = glutCreateSubWindow(window[0],0,0,650,500);
+		init();
+		createmenu();
+		glutDisplayFunc(display);
+		glutReshapeFunc(reshape);
+		glutMouseFunc(mouse);
+	window[2] = glutCreateSubWindow(window[0],0,0,650,500);
 	init();
 	createmenu();
-	glutDisplayFunc(display);
+	glutDisplayFunc(Display);
 	glutReshapeFunc(reshape);
-    glutMouseFunc(mouse);
+	glutMouseFunc(mouse);
+	window[3] = glutCreateSubWindow(window[0],0,0,650,500);
+	init();
+	createmenu();
+	glutDisplayFunc(Display1);
+	glutReshapeFunc(reshape);
+	glutMouseFunc(mouse);
 	glutMainLoop();
 	return 0;
 }
