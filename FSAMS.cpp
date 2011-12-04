@@ -22,6 +22,9 @@ int images;
 
 static GLint window[4]; //// Number of windows
 
+int mousex,mousey;
+int zone;
+
 /////Setting up camera location and colour variables/////////////////
 #define PI 3.14159265
 static float alpha = 0.0;
@@ -188,9 +191,9 @@ void init(void)
 /*** generate textures *****/
 	glGenTextures(3, tex_name);
 /* read *.bmp files */
-	generatetex("floor1.bmp",1);
+	generatetex("FirstFloorPeople.bmp",1);
 	generatetex("SecondFloorPeople.bmp",2);
-	generatetex("ThirdFloorNoPeople.bmp",3);
+	generatetex("ThirdFloorPeople.bmp",3);
 	glPopMatrix();
   	glutPostRedisplay();
 }
@@ -270,65 +273,65 @@ void mouse(int button, int state, int x, int y)
 }
 
 int checkZone(int mousex, int mousey){
-	//test for floor shown on UI
-	//if first floor is shown
-	if(((mousex >= 36 && mousex <= 272) && (mousey >= 179 && mousey <= 482)) || 
-	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <=179))){
-		return 1;
+	int curwin = glutGetWindow();
+	if(curwin == window[1]){
+		if(((mousex >= 36 && mousex <= 272) && (mousey >= 179 && mousey <= 482)) || 
+		((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <=179))){
+			return 1;
+		}
+		else if (((mousex >= 272 && mousex <= 567) && (mousey >= 179 && mousey <= 482)) ||
+			       ((mousex >= 567 && mousex <= 662) && (mousey >= 295 && mousey <= 482)) ||
+				   ((mousex >= 657 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+				return 2;
+		}
+		else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+			       ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
+				   ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 295))){
+				return 3;
+		}
+		else{
+			return 0;
+		}
 	}
-	else if (((mousex >= 272 && mousex <= 567) && (mousey >= 179 && mousey <= 482)) ||
-	           ((mousex >= 567 && mousex <= 662) && (mousey >= 295 && mousey <= 482)) ||
-	           ((mousex >= 657 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
-			return 2;
+	else if(curwin == window[2]){
+		if(((mousex >= 36 && mousex <= 466) && (mousey >= 179 && mousey <= 482)) ||
+		((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
+		((mousex >= 466 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
+		((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+			return 4;
+		}
+		else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+			 ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
+			 ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 359)) ||
+			 ((mousex >= 466 && mousex <= 662) && (mousey >= 359 && mousey <= 482))){
+				return 5;
+		}
+		else{
+			return 0;
+		}
 	}
-	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
-	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
-	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 295))){
-			return 3;
-	}
-	else{
-		return 0;
-	}
-
-	//if second floor is shown
-	if(((mousex >= 36 && mousex <= 466) && (mousey >= 179 && mousey <= 482)) ||
-	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
-	   ((mousex >= 466 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
-	   ((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
-		return 4;
-	}
-	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
+	else if(curwin == window[3]){
+		if((mousex >= 36 && mousex <= 466) && (mousey >= 359 && mousey <= 482)){
+			return 6;
+		}
+		else if(((mousex >= 36 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
+			((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
+			((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
+				return 7;
+		}
+		else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
 	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
 	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 359)) ||
 	           ((mousex >= 466 && mousex <= 662) && (mousey >= 359 && mousey <= 482))){
-			return 5;
-	}
-	else{
-		return 0;
-	}
-
-	//if third floor is shown
-	if((mousex >= 36 && mousex <= 466) && (mousey >= 359 && mousey <= 482)){
-		return 6;
-	}
-	else if(((mousex >= 36 && mousex <= 567) && (mousey >= 179 && mousey <= 359)) ||
-	   ((mousex >= 36 && mousex <= 195) && (mousey >= 56 && mousey <= 179)) ||
-	   ((mousex >= 567 && mousex <= 605) && (mousey >= 179 && mousey <= 220))){
-		return 7;
-	}
-	else if (((mousex >= 195 && mousex <= 662) && (mousey >= 56 && mousey <= 179)) ||
-	           ((mousex >= 605 && mousex <= 662) && (mousey >= 179 && mousey <= 220)) ||
-	           ((mousex >= 567 && mousex <= 662) && (mousey >= 220 && mousey <= 359)) ||
-	           ((mousex >= 466 && mousex <= 662) && (mousey >= 359 && mousey <= 482))){
-			return 8;
-	}
-	else{
-		return 0;
+				return 8;
+		}
+		else{
+			return 0;
+		}
 	}
 }
 
 void drawZone(int zoneId, int alarmtype){
-	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	if(alarmtype == 1){
 		glColor4f(1.0, 0.0, 0.0, 0.5);
 	}
@@ -336,107 +339,48 @@ void drawZone(int zoneId, int alarmtype){
 		glColor4f(0.0, 0.0, 1.0, 0.5);
 	}
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_BLEND);
 	switch (zoneId){
 	case 1:
-		printf("polygon has been drawn");
-		//imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
-		glBegin(GL_POLYGON);
-			glVertex2i(36,56);
-			glVertex2i(195,56);
-			glVertex2i(195,179);
-			glVertex2i(272,179);
-			glVertex2i(272,482);
-			glVertex2i(36,482);
-		glEnd();
+		glRecti(36,56,195,179);
+		glRecti(36,179,272,482);
 		glFlush();
 		break;
 	case 2:
-		glBegin(GL_POLYGON);
-			glVertex2i(272,482);
-			glVertex2i(272,179);
-			glVertex2i(605,179);
-			glVertex2i(605,220);
-			glVertex2i(567,220);
-			glVertex2i(567,295);
-			glVertex2i(662,295);
-			glVertex2i(662,482);
-		glEnd();
+		glRecti(272,179,567,295);
+		glRecti(567,179,605,220);
+		glRecti(272,295,662,482);
 		break;
 	case 3:
-		glBegin(GL_POLYGON);
-			glVertex2i(195,56);
-			glVertex2i(662, 56);
-			glVertex2i(662, 295);
-			glVertex2i(567, 295);
-			glVertex2i(567, 220);
-			glVertex2i(605, 220);
-			glVertex2i(605, 179);
-			glVertex2i(195,179);
-		glEnd();
+		glRecti(195,56,662,179);
+		glRecti(605,179,662,220);
+		glRecti(567,220,662,295);
 		break;
 	case 4:
-		glBegin(GL_POLYGON);
-			glVertex2i(36,56);
-			glVertex2i(195,56);
-			glVertex2i(195,179);
-			glVertex2i(605,179);
-			glVertex2i(605,220);
-			glVertex2i(567, 220);
-			glVertex2i(567,359);
-			glVertex2i(466, 359);
-			glVertex2i(466, 482);
-			glVertex2i(36,482);
-		glEnd();
+		glRecti(36,56,195,179);
+		glRecti(36,179,466,482);
+		glRecti(466,179,567,359);
+		glRecti(567,179,605,220);
 		break;
 	case 5:
-		glBegin(GL_POLYGON);
-			glVertex2i(195,56);
-			glVertex2i(662,56);
-			glVertex2i(662,482);
-			glVertex2i(466,482);
-			glVertex2i(466,359);
-			glVertex2i(567,359);
-			glVertex2i(567,220);
-			glVertex2i(605,220);
-			glVertex2i(605,179);
-			glVertex2i(195,179);
-		glEnd();
+		glRecti(195,56,662,179);
+		glRecti(605,179,662,220);
+		glRecti(567,220,662,295);
+		glRecti(466,359,662,482);
 		break;
 	case 6:
-		glBegin(GL_POLYGON);
-			glVertex2i(36,482);
-			glVertex2i(36,359);
-			glVertex2i(466,359);
-			glVertex2i(466,482);
-		glEnd();
-		glutPostRedisplay();
-		glFlush();
+		glRecti(36,359,466,482);
 		break;
 	case 7:
-		glBegin(GL_POLYGON);
-			glVertex2i(36,56);
-			glVertex2i(195,56);
-			glVertex2i(195,179);
-			glVertex2i(605,179);
-			glVertex2i(605,220);
-			glVertex2i(567, 220);
-			glVertex2i(567,359);
-			glVertex2i(36,359);
-		glEnd();
+		glRecti(36,56,195,179);
+		glRecti(36,179,567,395);
+		glRecti(605,179,662,220);
 		break;
 	case 8:
-		glBegin(GL_POLYGON);
-			glVertex2i(195,56);
-			glVertex2i(662,56);
-			glVertex2i(662,482);
-			glVertex2i(466,482);
-			glVertex2i(466,359);
-			glVertex2i(567,359);
-			glVertex2i(567,220);
-			glVertex2i(605,220);
-			glVertex2i(605,179);
-			glVertex2i(195,179);
-		glEnd();
+		glRecti(195,56,662,179);
+		glRecti(605,179,662,220);
+		glRecti(567,220,662,295);
+		glRecti(466,359,662,482);
 		break;
 	default:
 		break;
@@ -574,18 +518,20 @@ void createmenu(void){
 	firemenu = glutCreateMenu(rcmenu);
 	glutAddMenuEntry("Fire Alarm", 4);
 	glutAddMenuEntry("Fire Drill", 5);
+	glutAddMenuEntry("Off",6);
 
 	//adding menu items to security sub menu
 	securitymenu = glutCreateMenu(rcmenu);
-	glutAddMenuEntry("Security Alarm", 6);
-	glutAddMenuEntry("Security Drill", 7);
+	glutAddMenuEntry("Security Alarm", 7);
+	glutAddMenuEntry("Security Drill", 8);
+	glutAddMenuEntry("Off",9);
 
 	//adding menu items to main menu
 	glutCreateMenu(rcmenu);
-	glutAddSubMenu("Floors", 1);
-	glutAddSubMenu("Fire", 2);
-	glutAddSubMenu("Security", 3);
-	glutAddMenuEntry("Cancel Alarm", 3);
+	glutAddSubMenu("Floors", floormenu);
+	glutAddSubMenu("Fire", firemenu);
+	glutAddSubMenu("Security", securitymenu);
+	glutAddMenuEntry("Cancel Alarm", 10);
 	glutAddMenuEntry("Exit", 27);
 
 	//attaching menu to mouse right click
@@ -615,7 +561,48 @@ void rcmenu(int id)
 			glutPopWindow();
 			break;
 
-
+		case 4:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			drawZone(zone,1);
+			//call fire control function
+			//switch floor plan to no people
+			//call no people function
+			break;
+		case 5:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			drawZone(zone,1);
+			//call fire drill function
+			break;
+		case 6:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			//call cancel alarm function using zone, password, and fire
+			//reset floor plan
+			break;
+		case 7:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			drawZone(zone, 2);
+			//call security control function
+			break;
+		case 8:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			drawZone(zone, 2);
+			//call security drill function
+			break;
+		case 9:
+			//get mousex, mousey
+			zone = checkZone(mousex,mousey);
+			//call cancel alarm function using zone, password, security
+			//reset floor plan
+			break;
+		case 10:
+			//call cancel all
+			//reset all floor plans
+			break;
 
 	case 27: /* exit the program */
 		exit(0);
