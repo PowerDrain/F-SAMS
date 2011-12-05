@@ -14,7 +14,10 @@ public:
 	string DISABLE_ALARM;
 	string DISABLE_ALARM_TYPE;
 
+	string CLEAR_BUILDING;
+	string CALL_POLICE_WARNING;
 	string CALL_POLICE;
+	string CALL_FIRE_DEPARTMENT_WARNING;
 	string CALL_FIRE_DEPARTMENT;
 	string ACTIVATE_AUDIBLE_ALARM;
 	string DEACTIVATE_AUDIBLE_ALARM;
@@ -44,7 +47,10 @@ public:
 		DISABLE_ALARM						= "All alarms DISABLED in Zone ";
 		DISABLE_ALARM_TYPE					= "alarms DISABLED in Zone ";
 
+		CLEAR_BUILDING						= "The building is clear of people";
+		CALL_POLICE_WARNING					= "The Police Station will be called in 2 MINUTES via 9-1-1";
 		CALL_POLICE							= "Contacting the Police Station via 9-1-1";
+		CALL_FIRE_DEPARTMENT_WARNING		= "The Fire Department will be called in 2 MINUTES via 9-1-1";
 		CALL_FIRE_DEPARTMENT				= "Contacting the Fire Department via 9-1-1";
 		ACTIVATE_AUDIBLE_ALARM				= "Audible alarm ACTIVATED in Zone ";
 		DEACTIVATE_AUDIBLE_ALARM			= "Audible alarm DEACTIVATED in Zone ";

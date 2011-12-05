@@ -21,41 +21,44 @@ public:
 
 	// PUBLIC CONTROL METHODS
 	void initBldg();
-	void fire_event(int);
+	void fire_event(int); // DONE!
 	void fire_test_event(int); // DONE!
-	string security_event(int zoneID);
+	void security_event(int); // DONE!
 	void security_test_event(int); // DONE!
-	void turn_off(int zoneID, string password); // DONE!
-	void turn_off(int zoneID, string password, string alarm_type); // DONE!
+	void turn_off(int, string); // DONE!
+	void turn_off(int, string, string); // DONE!
+	void clear_bldg(); // DONE!
+	void active_alarms(); // DONE!
 
 private:
 	// PRIVATE METHODS
-	bool only_alarm(string alarm_type); // DONE!
+	bool only_alarm(string); // DONE!
+	bool repeat_alarm(string, int); // DONE!
 	void call_cops(); // DONE!
 	void call_FD(); // DONE!
-	void find_peps(int zoneID);
-	bool password_ok(string password); // DONE!
-	void disable_alarm(int zoneID); // DONE!
-	void disable_alarm(int zoneID, string alarm_type); // DONE!
+	bool floor_occupied(int); // DONE!
+	bool password_ok(string); // DONE!
+	void disable_alarm(int); // DONE!
+	void disable_alarm(int, string); // DONE!
 
 	void audible_alarm(int); // DONE!
-	void disable_audio_alarm(int zoneID); // DONE!
+	void disable_audio_alarm(int); // DONE!
 
 	void dir_indicator(int); // DONE!
-	void deact_directional(int zoneID); // DONE!
+	void deact_directional(int); // DONE!
 
-	void sprink_on(int zoneID); // DONE!
-	void sprink_off(int zoneID); // DONE!
+	void sprink_on(int); // DONE!
+	void sprink_off(int); // DONE!
 
-	void power_on(int zoneID); // DONE!
-	void power_off(int zoneID); // DONE!
+	void power_on(int); // DONE!
+	void power_off(int); // DONE!
 
-	void lock_doors(int zoneID); // DONE!
-	void unlock_doors(int zoneID); // DONE!
+	void lock_doors(int); // DONE!
+	void unlock_doors(int); // DONE!
 
 	// SYSTEM LOGGING
 	void syslog(string); // DONE!
-	void log_alarm(int zoneID, string alarm_type); // DONE!
+	void log_alarm(int, string); // DONE!
 	string zoneString(int); // DONE!
 
 };
