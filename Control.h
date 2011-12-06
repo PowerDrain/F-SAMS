@@ -27,8 +27,9 @@ public:
 	void security_test_event(int); // DONE!
 	void turn_off(int, string); // DONE!
 	void turn_off(int, string, string); // DONE!
-	void clear_bldg(); // DONE!
+	void clear_bldg(int); // DONE!
 	void active_alarms(); // DONE!
+	void dump_log();
 
 private:
 	// PRIVATE METHODS

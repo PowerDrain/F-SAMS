@@ -9,14 +9,20 @@
 #include <string>
 #include <sstream>
 #include <string.h>
+#include "Control.h"
 using namespace std;
 
 void drawZone(int, int);
 void Display();
 void rcmenu(int);
+int checkZone(int,int);
+void contactControl();
 /////GLobal Declarations///////////////
 GLfloat distance = 0.0;
 GLuint tex_name[12];
+int globalZoneID;
+char *alarmType;
+Control ctrl;
 int n;
 /* data for two texture arrays */
 unsigned char *tex_image[12] = {NULL, NULL};
@@ -189,7 +195,7 @@ void init(void)
 	generatetex("FirstFloorPeople.bmp",1);
 	generatetex("SecondFloorPeople.bmp",2);
 	generatetex("ThirdFloorPeople.bmp",3);
-        generatetex("floor.bmp",4);
+      //  generatetex("floor.bmp",4);
 	glPopMatrix();
   	glutPostRedisplay();
 }
@@ -251,6 +257,7 @@ void Display1(void)
         // Set image size
 	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	//imagelocation(2,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
+	glPopMatrix();
 	glutPostRedisplay();
 	glFlush();
 	glutSwapBuffers();
@@ -260,10 +267,13 @@ void mouse(int button, int state, int x, int y)
     switch (button) {
         case GLUT_LEFT_BUTTON:
         if (state == GLUT_DOWN){
-        printf("Mouse position is %d,  %d\n", x,y);
+        //printf("Mouse position is %d,  %d\n", x,y);
+		globalZoneID = checkZone(x,y);
+		contactControl();
         if(glutGetModifiers() == GLUT_ACTIVE_CTRL){
                     glutPostRedisplay();}
         }
+		
         break;
 
         default:
@@ -438,7 +448,7 @@ void rcmenu( int id)
 
 
         case 3:
-                        glutSetWindow(window[3]);
+			glutSetWindow(window[3]);
 			glutPopWindow();
 			glutPopWindow();
 			break;
@@ -446,10 +456,11 @@ void rcmenu( int id)
 		case 4:
 
 			//get mousex, mousey
-			//zone = checkZone(mousex,mousey);
+			zone = checkZone(mousex,mousey);
                         //zone = checkZone(1,1);
-                        printf("FIRE ALARM TURNED ON\n" );
-                        glColor4f(1,0,0,0.03);
+                        //printf("FIRE ALARM TURNED ON\n" );
+						alarmType = "FA";
+                        glColor4f(1,0,0,0.3);
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
                         drawZone(1,1);
                         glutPostRedisplay();
@@ -466,7 +477,7 @@ void rcmenu( int id)
 		case 6:
     
 			//get mousex, mousey
-			//zone = checkZone(mousex,mousey);
+			zone = checkZone(mousex,mousey);
                         printf("FIRE ALARM TURNED OFF\n" );
                         glColor4f(1,0,0,1.0);
                         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
@@ -480,7 +491,8 @@ void rcmenu( int id)
 			zone = checkZone(mousex,mousey);
 			//drawZone(zone, 2);
                         glColor4f(1,1,1,0.7);
-                        printf("SECURITY Alarm TURNED ON\n" );
+                        //printf("SECURITY Alarm TURNED ON\n" );
+						alarmType = "SA";
 			//call security control function
 			break;
 		case 8:
@@ -505,6 +517,11 @@ void rcmenu( int id)
 			break;
 
 	case 27: /* exit the program */
+		printf("Current existing alarms:\n");
+		ctrl.active_alarms();
+		ctrl.dump_log();
+		printf("Hit [Enter] to continue. . .\n");
+		getchar();
 		exit(0);
 		break;
 	default:
@@ -515,8 +532,24 @@ void rcmenu( int id)
 	}
 }
 
+void contactControl(){
+	if (globalZoneID != 0 && alarmType != ""){
+		if (alarmType == "FA"){
+			ctrl.fire_event(globalZoneID);
+			globalZoneID = 0;
+			alarmType = "";
+		} else if (alarmType == "SA"){
+			ctrl.security_event(globalZoneID);
+			globalZoneID = 0;
+			alarmType = "";
+		}
+	}
+	//printf("Inside of contactControl\n");
+}
+
 int main(int argc, char** argv)
 {
+	//ctrl.initBldg();
         writemessage();
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA); 

@@ -22,26 +22,35 @@ Control::~Control() {
 // Inialize the building layout
 void Control::initBldg() {
 
+	/* DROP QUERIES */
+	db->query("DROP TABLE floor;");
+	db->query("DROP TABLE zone;");
+	db->query("DROP TABLE room;");
+	db->query("DROP TABLE alarm;");
+	db->query("DROP TABLE admin;");
+	db->query("DROP TABLE log;");
+
 	/* Table Creation [DATABASE ALREADY CONTAINS THIS INFORMATION -- DO NOT UNCOMMENT!] */
-	db->query("CREATE TABLE floor (id INTEGER PRIMARY KEY, name TEXT, occupied TEXT, createDt INTEGER);");  
-	db->query("CREATE TABLE zone  (id INTEGER PRIMARY KEY, floorID INTEGER, name TEXT, powered TEXT, locked TEXT, sprinklered TEXT, createDt INTEGER);");
-	db->query("CREATE TABLE room  (id INTEGER PRIMARY KEY, zoneID INTEGER, name TEXT, xpos INTEGER, ypos INTEGER, height INTEGER, width INTEGER, createDt INTEGER);");
+	db->query("CREATE TABLE floor (id INTEGER PRIMARY KEY, name TEXT, occupied TEXT, createDt INTEGER);");
+	db->query("CREATE TABLE zone (id INTEGER PRIMARY KEY, floorID INTEGER, name TEXT, powered TEXT, locked TEXT, sprinklered TEXT, createDt INTEGER);");
+	db->query("CREATE TABLE room (id INTEGER PRIMARY KEY, zoneID INTEGER, name TEXT, xpos INTEGER, ypos INTEGER, height INTEGER, width INTEGER, createDt INTEGER);");
 	db->query("CREATE TABLE alarm (id INTEGER PRIMARY KEY AUTOINCREMENT, zoneID INTEGER, type TEXT, createDt INTEGER, resolveDt INTEGER);");
-	db->query("CREATE TABLE admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT);");	
+	db->query("CREATE TABLE admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT);");
+	db->query("CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT, createDt INTEGER, log_text TEXT);");
 
 	/* DROP QUERIES
 	db->query("DROP TABLE floor;");
 	db->query("DROP TABLE zone;");
 	db->query("DROP TABLE room;");
 	db->query("DROP TABLE alarm;");
-	db->query("DROP TABLE admin;");
-	*/
+	db->query("DROP TABLE admin;"); */
+
 
 	/* Initial table information [DATABASE ALREADY CONTAINS THIS INFORMATION -- DO NOT UNCOMMENT!] */
-	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (1, 'Floor 1', 0, datetime('now'));");
-	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (2, 'Floor 2', 0, datetime('now'));");
-	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (3, 'Floor 3', 0, datetime('now'));");
-	
+	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (1, 'Floor 1', '1', datetime('now'));");
+	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (2, 'Floor 2', '1', datetime('now'));");
+	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (3, 'Floor 3', '1', datetime('now'));");
+
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (1, 1, 'Zone 1', '1', '0', '0', datetime('now'));");
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (2, 1, 'Zone 2', '1', '0', '0', datetime('now'));");
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (3, 1, 'Zone 3', '1', '0', '0', datetime('now'));");
@@ -50,16 +59,17 @@ void Control::initBldg() {
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (6, 3, 'Zone 6', '1', '0', '0', datetime('now'));");
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (7, 3, 'Zone 7', '1', '0', '0', datetime('now'));");
 	db->query("INSERT INTO zone (id, floorID, name, powered, locked, sprinklered, createDt) VALUES (8, 3, 'Zone 8', '1', '0', '0', datetime('now'));");
-	
-	db->query("INSERT INTO admin (id, username, password) VALUES (1, 'admin', 'fsams');");		
+
+	db->query("INSERT INTO admin (id, username, password) VALUES (1, 'admin', 'fsams');"); 		 
 }
 	
 // PUBLIC CONTROL METHODS
 void Control::fire_event(int zoneID) {
-
+	//printf("In fire_event\n");
+	//printf("zoneID = %d\n", zoneID);
 	// If there are no other Fire Alarms -- this is the only one
+	//printf("Checking for other alarms.\n");
 	if (only_alarm(msg.ALARM_TYPE_FIRE)) {
-
 		// Log the alarm
 		log_alarm(zoneID, msg.ALARM_TYPE_FIRE);
 
@@ -86,7 +96,14 @@ void Control::fire_event(int zoneID) {
 	} else {
 
 		// If alaram is in same zone
+		//printf("Other alarms found\n");
 		if (repeat_alarm(msg.ALARM_TYPE_FIRE, zoneID)) {
+			
+			// Log the alarm
+			log_alarm(zoneID, msg.ALARM_TYPE_FIRE);
+
+			// Call the Fire Department	
+			call_FD();
 
 			// Check if the building is occupied
 			if (floor_occupied(zoneID)) {
@@ -100,7 +117,7 @@ void Control::fire_event(int zoneID) {
 			}
 
 		} else {
-
+			//printf("No other alarms found.\n");
 			// Log the alarm
 			log_alarm(zoneID, msg.ALARM_TYPE_FIRE);
 
@@ -141,7 +158,7 @@ void Control::fire_test_event(int zoneID) {
 }
 	
 void Control::security_event(int zoneID) {
-
+	//printf("In security_event\n");
 	// If there are no other Security Alarms -- this is the only one
 	if (only_alarm(msg.ALARM_TYPE_SECURITY)) {
 
@@ -224,11 +241,17 @@ void Control::turn_off(int zoneID, string password, string alarm_type) {
 	}
 }
 
-void Control::clear_bldg() {
+void Control::clear_bldg(int zoneID) {
 	//Clears all floors of the building
 	string strquery = "UPDATE floor SET occupied = '0';";
 	char *query = strdup(strquery.c_str());
 	db->query(query);
+
+	// Power off the zone
+	power_off(zoneID);
+
+	// Turn on sprinklers in zone
+	sprink_on(zoneID);
 
 	// Create log information		
 	syslog(msg.CLEAR_BUILDING + msg.ELLIPSIS);
@@ -237,11 +260,23 @@ void Control::clear_bldg() {
 void Control::active_alarms() {
 	// Display the active alarms
 	cout << "Alarms: " << endl;
-	vector<vector<string> > result = db->query("SELECT * FROM alarm;");
+	vector<vector<string> > result = db->query("SELECT id, zoneID, type, datetime(createDt, 'localtime'), (resolveDt != 0) FROM alarm;");
 	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
 	{
 		vector<string> row = *it;
 		cout << "ID: " << row.at(0) << ", Zone ID: " << row.at(1) << ", Type: " << row.at(2) << ", Created: " << row.at(3) << ", Resolved: " << row.at(4) <<endl;
+	}
+	cout << endl;
+}
+
+void Control::dump_log() {
+	// Display the active alarms
+	cout << "Logs: " << endl;
+	vector<vector<string> > result = db->query("SELECT datetime(createDt, 'localtime'), log_text FROM log;");
+	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+	{
+		vector<string> row = *it;
+		cout << row.at(0) << " : " << row.at(1) <<endl;
 	}
 	cout << endl;
 }
@@ -250,7 +285,7 @@ void Control::active_alarms() {
 bool Control::only_alarm(string alarm_type) {
 	// Check database for existing alarm of this type
 	string activeAlarm;
-	string strquery = "SELECT count(*) FROM alarm WHERE (type = " + alarm_type + ") AND (resolveDt != 0);";
+	string strquery = "SELECT count(*) FROM alarm WHERE (type = '" + alarm_type + "') AND (resolveDt = 0);";
 	char *query = strdup(strquery.c_str());
 	vector<vector<string> > result = db->query(query);
 	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
@@ -265,7 +300,7 @@ bool Control::only_alarm(string alarm_type) {
 bool Control::repeat_alarm(string alarm_type, int zoneID) {
 	// Check database for existing alarm of this type in same zone
 	string activeAlarm;
-	string strquery = "SELECT count(*) FROM alarm WHERE (type = " + alarm_type + ") AND (zoneID = " + zoneString(zoneID) + ") AND (resolveDt != 0);";
+	string strquery = "SELECT count(*) FROM alarm WHERE (type = '" + alarm_type + "') AND (zoneID = " + zoneString(zoneID) + ") AND (resolveDt = 0);";
 	char *query = strdup(strquery.c_str());
 	vector<vector<string> > result = db->query(query);
 	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
@@ -274,7 +309,7 @@ bool Control::repeat_alarm(string alarm_type, int zoneID) {
 		activeAlarm = row.at(0);
 	}
 	// Return if alarm exists in different zone
-	return (activeAlarm == "0");
+	return (activeAlarm == "1");
 }
 
 void Control::call_cops() {
@@ -303,7 +338,13 @@ bool Control::floor_occupied(int zoneID){
 		occupied = row.at(0);
 	}
 	//If the password is correct then return true
-	return (occupied == "1");
+	if (occupied == "1") {
+		cout << "Checking for people...People found." << endl;
+		return true;
+	} else {
+		cout << "Checking for people...Building empty." << endl;
+		return false;
+	}
 }
 
 bool Control::password_ok(string password) {
@@ -430,6 +471,11 @@ void Control::unlock_doors(int zoneID) {
 // SYSTEM LOGGING
 void Control::syslog(string toConsole) {
 	std::cout << toConsole << std::endl;
+
+	// Add log info to database
+	string strquery = "INSERT INTO log (createDt, log_text) VALUES (datetime('now'), '" + toConsole + "');";
+	char *query = strdup(strquery.c_str());
+	db->query(query);
 }
 	
 void Control::log_alarm(int zoneID, string alarm_type) {
@@ -440,7 +486,7 @@ void Control::log_alarm(int zoneID, string alarm_type) {
 	db->query(query);
 
 	// Create log information		
-	syslog("Alarm added to " + zoneString(zoneID) + msg.ELLIPSIS);
+	syslog("Alarm added to zone " + zoneString(zoneID) + msg.ELLIPSIS);
 }
 
 string Control::zoneString(int zoneID) {
