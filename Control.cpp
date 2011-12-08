@@ -203,6 +203,27 @@ void Control::security_test_event(int zoneID){
 	log_alarm(zoneID, msg.ALARM_TYPE_FIRE_TEST);
 }
 	
+void Control::turn_off(string password) {
+	//Turns off all alarms in zone
+	if (password_ok(password)) {
+
+		for (int zoneID=1; zoneID<9; zoneID++) {
+			disable_alarm(zoneID);
+			disable_audio_alarm(zoneID);
+			deact_directional(zoneID);
+			sprink_off(zoneID);
+			power_on(zoneID);
+			unlock_doors(zoneID);
+		}
+
+		// Create log information -- password correct
+		syslog(msg.CORRECT_PASSWORD + msg.ELLIPSIS);
+	} else {
+		// Create log information -- password incorrect
+		syslog(msg.INCORRECT_PASSWORD + msg.ELLIPSIS);
+	}
+}
+	
 void Control::turn_off(int zoneID, string password) {
 	//Turns off all alarms in zone
 	if (password_ok(password)) {
@@ -255,6 +276,40 @@ void Control::clear_bldg(int zoneID) {
 
 	// Create log information		
 	syslog(msg.CLEAR_BUILDING + msg.ELLIPSIS);
+}
+
+bool Control::fire_alarm_active(int zoneID) {
+	
+	// Check database for active fire alarm based on zone id
+	string activeAlarm;
+	string strquery = "SELECT count(*) FROM alarm WHERE ((type = '" + msg.ALARM_TYPE_FIRE + "') OR (type = '" + msg.ALARM_TYPE_FIRE_TEST + "')) AND (zoneID = " + zoneString(zoneID) + ") AND (resolveDt = 0);";
+	char *query = strdup(strquery.c_str());
+	vector<vector<string> > result = db->query(query);
+	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+	{
+		vector<string> row = *it;
+		activeAlarm = row.at(0);
+	}
+	// Return if alarm exists in different zone
+	return (activeAlarm == "1");
+
+}
+
+bool Control::security_alarm_active(int) {
+	
+	// Check database for active security alarm based on zone id
+	string activeAlarm;
+	string strquery = "SELECT count(*) FROM alarm WHERE ((type = '" + msg.ALARM_TYPE_SECURITY + "') OR (type = '" + msg.ALARM_TYPE_SECURITY_TEST + "')) AND (zoneID = " + zoneString(zoneID) + ") AND (resolveDt = 0);";
+	char *query = strdup(strquery.c_str());
+	vector<vector<string> > result = db->query(query);
+	for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+	{
+		vector<string> row = *it;
+		activeAlarm = row.at(0);
+	}
+	// Return if alarm exists in different zone
+	return (activeAlarm == "1");
+
 }
 
 void Control::active_alarms() {
