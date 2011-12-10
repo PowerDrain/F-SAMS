@@ -1,4 +1,5 @@
 #define GLUT_DISABLE_ATEXIT_HACK
+#include<Windows.h>
 #include <iostream>
 #include <stdlib.h>
 #include <GL/glut.h>
@@ -7,6 +8,7 @@
 #include <string.h>
 #include "image.h"
 #include "draw_zone.h"
+#include "Control.h"
 using namespace std;
 
 void rcmenu(int);
@@ -14,6 +16,7 @@ void createmenu();
 void init();
 void reshape(int, int);
 int checkZone(int,int);
+Control systemControl;
 
 int checkZone(int mousex, int mousey){
 	int curwin = glutGetWindow();
@@ -91,6 +94,275 @@ void mouse(int button, int state, int x, int y)
         break;
     }
 }
+void display(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Set image size
+	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+        //glPopMatrix();
+	glutPostRedisplay();
+ 	//glFlush();
+	glutSwapBuffers();
+}
+void redraw_window1(void)
+{
+	glColor4f(1,1,1,1);
+        //redraw with no  people
+               if(cancelalarm==1){
+	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+    }if(cancelalarm==0){
+        imagelocation(7,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+    }
+		
+       // Check for Alarms at Zone1
+		 glColor4f(1,1,1,0.0032);
+		// systemControl.active_alarms();
+		//cout << systemControl.fire_alarm_active(1) << endl;
+		if(systemControl.fire_alarm_active(1)){
+		drawFireZone1();
+		}else if(systemControl.security_alarm_active(1)){
+		drawSecZone1();
+		}
+		if(systemControl.fire_alarm_active(2)){
+		drawFireZone2();
+		}else if(systemControl.security_alarm_active(2)){
+		imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+        imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
+		}
+		if(systemControl.fire_alarm_active(3)){
+		drawFireZone3();
+		}else if(systemControl.security_alarm_active(3)){
+		drawSecZone3();
+		}
+}
+void redraw_window2(void)
+{
+        if(cancelalarm==1){
+	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+    }if(cancelalarm==0){
+        imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+
+		if(systemControl.fire_alarm_active(4)){
+		drawFireZone4();
+		}else if(systemControl.security_alarm_active(4)){
+		imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+         imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
+		}
+		if(systemControl.fire_alarm_active(5)){
+		drawFireZone5();
+		}else if(systemControl.security_alarm_active(5)){
+		drawSecZone5();
+		}
+    }
+
+}
+void redraw_window3(void)
+{
+    if(cancelalarm==1){
+	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+    }if(cancelalarm==0){
+        imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+    }
+	drawSecZone3();
+        // Check for Type of alarm
+    /*    glColor4f(1,1,1,0.0032);
+        imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.21,0.31,-0.83,1.21,0.31,-0.35,-0.617,0.31,-0.35);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.98,0.31,-0.35,1.21,0.31,-0.35,1.21,0.31,-0.18,0.98,0.31,-0.18);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.835,0.31,-0.185,1.21,0.31,-0.185,1.21,0.31,0.102,0.835,0.31,0.102);
+      //  glColor4f(1,1,1,1.0);*/
+    glutPostRedisplay();
+	glutSwapBuffers();
+}
+void Display(void)
+{
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Set image size
+	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	//imagelocation(2,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
+	//glPopMatrix();
+	glutPostRedisplay();
+//	glFlush();
+	glutSwapBuffers();
+}
+
+void drawFireZone1(void)
+{
+        // If Zone 1, Fire alarm is activated
+        // Set image size
+          glColor4f(1,1,1,0.0032);
+          imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+          imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
+          glColor4f(1,0,0,1.0);
+          imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
+           glColor4f(1,1,1,0.32);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+
+void drawFireZone2(void){
+         // If Zone 2, Fire alarm is activated
+        // Set image size
+          imagelocation(4,0,0,1,0,1,1,0,1,-0.3,0.31,-0.35,0.835,0.31,-0.35,0.835,0.31,0.82,-0.3,0.31,0.82);
+	  imagelocation(4,0,0,1,0,1,1,0,1,0.835,0.31,-0.35,0.98,0.31,-0.35,0.98,0.31,-0.185,0.835,0.31,-0.185);
+	  imagelocation(4,0,0,1,0,1,1,0,1,0.835,0.31,0.102,1.21,0.31,0.102,1.21,0.31,0.82,0.835,0.31,0.82);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawFireZone3(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+        imagelocation(4,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.21,0.31,-0.83,1.21,0.31,-0.35,-0.617,0.31,-0.35);
+	imagelocation(4,0,0,1,0,1,1,0,1,0.98,0.31,-0.35,1.21,0.31,-0.35,1.21,0.31,-0.18,0.98,0.31,-0.18);
+	imagelocation(4,0,0,1,0,1,1,0,1,0.835,0.31,-0.185,1.21,0.31,-0.185,1.21,0.31,0.102,0.835,0.31,0.102);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawFireZone4(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+			imagelocation(4,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
+			imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
+			imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);;
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawFireZone5(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(4,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.2,0.31,-0.83,1.2,0.31,-0.35,-0.617,0.31,-0.35);
+			imagelocation(4,0,0,1,0,1,1,0,1,0.976,0.31,-0.35,1.2,0.31,-0.35,1.2,0.31,-0.18,0.976,0.31,-0.18);
+			imagelocation(4,0,0,1,0,1,1,0,1,0.83,0.31,-0.185,1.2,0.31,-0.185,1.2,0.31,0.35,0.83,0.31,0.35);
+			imagelocation(4,0,0,1,0,1,1,0,1,0.45,0.31,0.35,1.2,0.31,0.35,1.2,0.31,0.825,0.45,0.31,0.825);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawFireZone6(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+          imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawFireZone7(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+			imagelocation(4,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
+			imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+
+void drawFireZone8(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+	imagelocation(4,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.2,0.31,-0.83,1.2,0.31,-0.35,-0.617,0.31,-0.35);
+        imagelocation(4,0,0,1,0,1,1,0,1,0.976,0.31,-0.35,1.2,0.31,-0.35,1.2,0.31,-0.18,0.976,0.31,-0.18);
+	imagelocation(4,0,0,1,0,1,1,0,1,0.83,0.31,-0.185,1.2,0.31,-0.185,1.2,0.31,0.345,0.83,0.31,0.345);
+        imagelocation(4,0,0,1,0,1,1,0,1,0.45,0.31,0.345,1.2,0.31,0.345,1.2,0.31,0.825,0.45,0.31,0.825);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone1(void)
+{
+        // If Zone 1, Fire alarm is activated
+        // Set image size
+          imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+          imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+
+void drawSecZone2(void){
+         // If Zone 2, Fire alarm is activated
+        // Set image size
+          imagelocation(5,0,0,1,0,1,1,0,1,-0.3,0.31,-0.35,0.835,0.31,-0.35,0.835,0.31,0.82,-0.3,0.31,0.82);
+	  imagelocation(5,0,0,1,0,1,1,0,1,0.835,0.31,-0.35,0.98,0.31,-0.35,0.98,0.31,-0.185,0.835,0.31,-0.185);
+	  imagelocation(5,0,0,1,0,1,1,0,1,0.835,0.31,0.102,1.21,0.31,0.102,1.21,0.31,0.82,0.835,0.31,0.82);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone3(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+        imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.21,0.31,-0.83,1.21,0.31,-0.35,-0.617,0.31,-0.35);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.98,0.31,-0.35,1.21,0.31,-0.35,1.21,0.31,-0.18,0.98,0.31,-0.18);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.835,0.31,-0.185,1.21,0.31,-0.185,1.21,0.31,0.102,0.835,0.31,0.102);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone4(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+			imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
+			imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
+			imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);;
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone5(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.2,0.31,-0.83,1.2,0.31,-0.35,-0.617,0.31,-0.35);
+			imagelocation(5,0,0,1,0,1,1,0,1,0.976,0.31,-0.35,1.2,0.31,-0.35,1.2,0.31,-0.18,0.976,0.31,-0.18);
+			imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.185,1.2,0.31,-0.185,1.2,0.31,0.35,0.83,0.31,0.35);
+			imagelocation(5,0,0,1,0,1,1,0,1,0.45,0.31,0.35,1.2,0.31,0.35,1.2,0.31,0.825,0.45,0.31,0.825);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone6(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+          imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+void drawSecZone7(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+			imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+			imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
+			imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+
+void drawSecZone8(void){
+
+         // If Zone 3, Fire alarm is activated
+        // Set image size
+	imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.2,0.31,-0.83,1.2,0.31,-0.35,-0.617,0.31,-0.35);
+        imagelocation(5,0,0,1,0,1,1,0,1,0.976,0.31,-0.35,1.2,0.31,-0.35,1.2,0.31,-0.18,0.976,0.31,-0.18);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.185,1.2,0.31,-0.185,1.2,0.31,0.345,0.83,0.31,0.345);
+        imagelocation(5,0,0,1,0,1,1,0,1,0.45,0.31,0.345,1.2,0.31,0.345,1.2,0.31,0.825,0.45,0.31,0.825);
+          glutPostRedisplay();
+          glutSwapBuffers();
+}
+
+void Display1(void)
+{
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Set image size
+	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	//imagelocation(2,0,0,1,0,1,1,0,1,-1.51,-0.09,1.51,1.51,-0.09,1.51,1.51,0.11,1.51,-1.51,0.11,1.51);
+	glutPostRedisplay();
+	glFlush();
+	glutSwapBuffers();
+}
 void rcmenu( int id)
 {
 	switch (id) {
@@ -122,37 +394,14 @@ void rcmenu( int id)
                         glColor4f(1,1,1,0.0032);
                         drawZone(globalZoneId,1);
 			//call fire control function, wait for a min to show no people window
-
+						systemControl.fire_event(globalZoneId);
+						glutDisplayFunc(redraw_window1);
                         // There should be a 2 min gap between changing window
 			//switch floor plan to no people
-                        if(globalZoneId == 1 || globalZoneId == 2 || globalZoneId == 3){
-                            glutDestroyWindow(window[1]);
-                            window[1] = glutCreateSubWindow(window[0],0,0,650,500);
-                            init();
-                            createmenu();
-                            glutReshapeFunc(reshape);
-                            glutMouseFunc(mouse);
-                            glutDisplayFunc(redraw_window1);
-                        }else if(globalZoneId == 4 || globalZoneId == 5 ){
-                            glutDestroyWindow(window[2]);
-                            window[2] = glutCreateSubWindow(window[0],0,0,650,500);
-                            init();
-                            createmenu();
-                            glutReshapeFunc(reshape);
-                            glutMouseFunc(mouse);
-                            glutDisplayFunc(redraw_window2);
-                        }else if(globalZoneId=6 || globalZoneId==7||globalZoneId==8){
-                            glutDestroyWindow(window[3]);
-                            window[3] = glutCreateSubWindow(window[0],0,0,650,500);
-                            init();
-                            createmenu();
-                            glutReshapeFunc(reshape);
-                            glutMouseFunc(mouse);
-                            glutDisplayFunc(redraw_window3);
-                        }
+						
+						}
                         else{
                              cout << "You have to selected the Zone First, use mouse left click to select \n";
-                        }
                         }
 			//call no people function
 			break;
@@ -369,10 +618,10 @@ void init(void)
 	generatetex("FirstFloorPeople.bmp",1);
 	generatetex("SecondFloorPeople.bmp",2);
 	generatetex("ThirdFloorPeople.bmp",3);
-        generatetex("red",4);
-        generatetex("sec",5);
+        generatetex("red.bmp",4);
+        generatetex("sec.bmp",5);
         generatetex("exit.bmp",6);
-        generatetex("FirstFloornoPeople.bmp",7);
+        generatetex("FirstFloorNoPeople.bmp",7);
         generatetex("SecondFloorNoPeople.bmp",8);
         generatetex("ThirdFloorNoPeople.bmp",9);
         glPopMatrix();
@@ -400,6 +649,8 @@ void reshape(int w, int h)
 int main(int argc, char** argv)
 {
         writemessage();
+		systemControl.turn_off("fsams");
+		systemControl.active_alarms();
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(650, 500);

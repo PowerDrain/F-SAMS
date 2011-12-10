@@ -289,13 +289,18 @@ bool Control::fire_alarm_active(int zoneID) {
 	{
 		vector<string> row = *it;
 		activeAlarm = row.at(0);
+
 	}
 	// Return if alarm exists in different zone
-	return (activeAlarm == "1");
-
+	if (activeAlarm != "0"){
+		cout << "Fire alarm triggered in zone: " << zoneID << endl;
+	} else {
+		cout << "Fire alarm not triggered in zone: " << zoneID << endl;
+	}
+	return (activeAlarm != "0");
 }
 
-bool Control::security_alarm_active(int) {
+bool Control::security_alarm_active(int zoneID) {
 	
 	// Check database for active security alarm based on zone id
 	string activeAlarm;
@@ -307,8 +312,13 @@ bool Control::security_alarm_active(int) {
 		vector<string> row = *it;
 		activeAlarm = row.at(0);
 	}
+	if (activeAlarm != "0"){
+		cout << "Security alarm triggered in zone: " << zoneID << endl;
+	} else {
+		cout << "Security alarm not triggered in zone: " << zoneID << endl;
+	}
 	// Return if alarm exists in different zone
-	return (activeAlarm == "1");
+	return (activeAlarm != "0");
 
 }
 
