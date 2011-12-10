@@ -7,10 +7,12 @@
 #include <string.h>
 #include "image.h"
 #include "draw_zone.h"
-#include "UIprevlog.h"
 using namespace std;
 
 void rcmenu(int);
+void createmenu();
+void init();
+void reshape(int, int);
 int checkZone(int,int);
 
 int checkZone(int mousex, int mousey){
@@ -115,14 +117,43 @@ void rcmenu( int id)
 	case 4:
 
                         if(globalZoneId!=0){
-                        printf("FIRE ALARM TURNED ON\n" );
+                        cancelalarm=0;
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
                         glColor4f(1,1,1,0.0032);
-                        drawZone(globalZoneId,1);}else{
+                        drawZone(globalZoneId,1);
+			//call fire control function, wait for a min to show no people window
+
+                        // There should be a 2 min gap between changing window
+			//switch floor plan to no people
+                        if(globalZoneId == 1 || globalZoneId == 2 || globalZoneId == 3){
+                            glutDestroyWindow(window[1]);
+                            window[1] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window1);
+                        }else if(globalZoneId == 4 || globalZoneId == 5 ){
+                            glutDestroyWindow(window[2]);
+                            window[2] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window2);
+                        }else if(globalZoneId=6 || globalZoneId==7||globalZoneId==8){
+                            glutDestroyWindow(window[3]);
+                            window[3] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window3);
+                        }
+                        else{
                              cout << "You have to selected the Zone First, use mouse left click to select \n";
                         }
-			//call fire control function
-			//switch floor plan to no people
+                        }
 			//call no people function
 			break;
 		case 5:
@@ -134,10 +165,43 @@ void rcmenu( int id)
 			//call fire drill function
 			break;
 		case 6:
-
+                        cancelalarm=1;
 			//get mousex, mousey
 			//zone = checkZone(mousex,mousey);
                         printf("FIRE ALARM TURNED OFF\n" );
+                        if(globalZoneId == 1 || globalZoneId == 2 || globalZoneId == 3){
+                            glutDestroyWindow(window[1]);
+                            window[1] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window1);
+                        }else if(globalZoneId == 4 || globalZoneId == 5 ){
+                            glutDestroyWindow(window[2]);
+                            window[2] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window2);
+                        }else{
+                            glutDestroyWindow(window[3]);
+                            window[3] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                            glutDisplayFunc(redraw_window3);
+                        }
+                           // glutDisplayFunc(DisplayExit);
+                           // glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+                           //     glColor4f(1,1,1,0.0032);
+                              //  drawZone(1,1);
+
+                            //check with chad zone 1
+                            
+
                      //   glColor4f(1,0,0,0.02);
                         //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
                         //drawZone(1,1);
@@ -148,7 +212,7 @@ void rcmenu( int id)
 		case 7:
                         printf("SECURITY Alarm TURNED ON\n" );
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-                        glColor4f(1,1,1,0.004);
+                        glColor4f(1,1,1,0.0032);
                         
                         // wait for mouse left click
                         // get globalZoneId from mouse left click
@@ -165,16 +229,62 @@ void rcmenu( int id)
 			break;
                 case 9:
 			//get mousex, mousey
-                        printf("SECURITY Alarm TURNED ON\n" );
-                        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-                        glColor4f(1,1,1,0.004);
-                        drawZone(globalZoneId,2);
+                        printf("SECURITY Alarm TURNED OFF\n" );
+                        if(globalZoneId == 1 || globalZoneId == 2 || globalZoneId == 3){
+                            glutDestroyWindow(window[1]);
+                            window[1] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutDisplayFunc(display);
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                        }else if(globalZoneId == 4 || globalZoneId == 5){
+                            glutDestroyWindow(window[2]);
+                            window[2] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutDisplayFunc(Display);
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                        }else{
+                            glutDestroyWindow(window[3]);
+                            window[3] = glutCreateSubWindow(window[0],0,0,650,500);
+                            init();
+                            createmenu();
+                            glutDisplayFunc(Display1);
+                            glutReshapeFunc(reshape);
+                            glutMouseFunc(mouse);
+                        }
 			//call cancel alarm function using zone, password, security
 			//reset floor plan
 			break;
 		case 10:
                         //glColor4f(1,0,0,1.0);
                         printf("ALL ALARMS TURNED OFF\n" );
+
+                        glutDestroyWindow(window[1]);
+                        window[1] = glutCreateSubWindow(window[0],0,0,650,500);
+                        init();
+                        createmenu();
+                        glutDisplayFunc(display);
+                        glutReshapeFunc(reshape);
+                        glutMouseFunc(mouse);
+
+                        glutDestroyWindow(window[2]);
+                        window[2] = glutCreateSubWindow(window[0],0,0,650,500);
+                        init();
+                        createmenu();
+                        glutDisplayFunc(Display);
+                        glutReshapeFunc(reshape);
+                        glutMouseFunc(mouse);
+
+                        glutDestroyWindow(window[3]);
+                        window[3] = glutCreateSubWindow(window[0],0,0,650,500);
+                        init();
+                        createmenu();
+                        glutDisplayFunc(Display1);
+                        glutReshapeFunc(reshape);
+                        glutMouseFunc(mouse);
 			//call cancel all
 			//reset all floor plans
 			break;
@@ -238,6 +348,9 @@ static void writemessage()
     cout <<"      *                 )  *     *   *       *       )        \n";
     cout <<"      *            ~~~~~  *       *  *       *  ~~~~~        \n";
     cout<<"---------------------------------------------------------------\n";
+    cout <<" USE MOUSE LEFT CLICK TO SELECT A ZONE \n";
+    cout <<" USE MOUSE RIGHT CLICK TO TURN ON/OFF ALARMS \n ";
+    cout <<"___________________________________________________________________________\n"<< endl;
 }
 
 /////////////// Setting up cameras, texturing the bmp file////////////////////
@@ -258,7 +371,11 @@ void init(void)
 	generatetex("ThirdFloorPeople.bmp",3);
         generatetex("red",4);
         generatetex("sec",5);
-	glPopMatrix();
+        generatetex("exit.bmp",6);
+        generatetex("FirstFloornoPeople.bmp",7);
+        generatetex("SecondFloorNoPeople.bmp",8);
+        generatetex("ThirdFloorNoPeople.bmp",9);
+        glPopMatrix();
   	glutPostRedisplay();
 }
 
