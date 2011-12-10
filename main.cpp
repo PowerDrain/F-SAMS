@@ -256,8 +256,8 @@ void init(void)
 	generatetex("FirstFloorPeople.bmp",1);
 	generatetex("SecondFloorPeople.bmp",2);
 	generatetex("ThirdFloorPeople.bmp",3);
-       generatetex("red.bmp",4);
-       generatetex("sec.bmp",5);
+        generatetex("red",4);
+        generatetex("sec",5);
 	glPopMatrix();
   	glutPostRedisplay();
 }
