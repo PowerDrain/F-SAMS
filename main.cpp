@@ -212,7 +212,7 @@ void Floor3redraw(void)
 	imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
 	}
 	//Check Zone 6 Security
-	if(systemControl.fire_alarm_active(6)){
+	if(systemControl.security_alarm_active(6)){
 	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
 	}
 
@@ -223,7 +223,7 @@ void Floor3redraw(void)
 	imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);
 	}
 	//Check Zone 7 Security 
-	if(systemControl.fire_alarm_active(7)){     
+	if(systemControl.security_alarm_active(7)){     
 	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
 	imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
 	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);
@@ -236,7 +236,7 @@ void Floor3redraw(void)
     imagelocation(4,0,0,1,0,1,1,0,1,0.45,0.31,0.345,1.2,0.31,0.345,1.2,0.31,0.825,0.45,0.31,0.825);
 	}
 	//Check Zone 8 Security
-	if(systemControl.fire_alarm_active(8)){
+	if(systemControl.security_alarm_active(8)){
 	imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.2,0.31,-0.83,1.2,0.31,-0.35,-0.617,0.31,-0.35);
     imagelocation(5,0,0,1,0,1,1,0,1,0.976,0.31,-0.35,1.2,0.31,-0.35,1.2,0.31,-0.18,0.976,0.31,-0.18);
 	imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.185,1.2,0.31,-0.185,1.2,0.31,0.345,0.83,0.31,0.345);
