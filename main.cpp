@@ -495,7 +495,7 @@ void rcmenu( int id)
 		case 6:
                     cout << "Please enter the password" << endl;
 					cin >> password;
-		   systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_SECURITY);
+		   systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_FIRE);
                     if(globalZoneId!=0){
                         cancelalarm=1;
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -558,6 +558,7 @@ void rcmenu( int id)
 		case 10:
                         cout << "Enter password to cancel alarms"<< endl;
 						cin >> password;
+						systemControl.turn_off(password);
 						glutSetWindow(window[1]);
 						glutPopWindow();
 						glutPopWindow();

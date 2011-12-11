@@ -177,7 +177,7 @@ void Control::security_event(int zoneID) {
 	} else {
 
 		// Log the alarm
-		log_alarm(zoneID, msg.ALARM_TYPE_FIRE);
+		log_alarm(zoneID, msg.ALARM_TYPE_SECURITY);
 
 		// Activate audible alarm
 		audible_alarm(zoneID);
@@ -200,7 +200,7 @@ void Control::security_test_event(int zoneID){
 
 	// Create log information	
 	syslog(msg.SECURITY_TEST_EVENT + zoneString(zoneID) + msg.ELLIPSIS);
-	log_alarm(zoneID, msg.ALARM_TYPE_FIRE_TEST);
+	log_alarm(zoneID, msg.ALARM_TYPE_SECURITY_TEST);
 }
 	
 void Control::turn_off(string password) {
