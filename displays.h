@@ -1,9 +1,9 @@
 #ifndef display_
 #define display_
 void display(void);
-void redraw_window1(void);
-void redraw_window2(void);
-void redraw_window3(void);
+void Floor1redraw(void);
+void Floor2redraw(void);
+void Floor3redraw(void);
 void Display(void);
 void drawFireZone1(void);
 void drawFireZone2(void);
