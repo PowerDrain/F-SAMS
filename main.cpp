@@ -9,6 +9,8 @@
 #include "image.h"
 #include "draw_zone.h"
 #include "Control.h"
+#include <string>
+
 using namespace std;
 
 void rcmenu(int);
@@ -17,6 +19,8 @@ void init();
 void reshape(int, int);
 int checkZone(int,int);
 Control systemControl;
+Messaging msg;
+string password;
 
 int checkZone(int mousex, int mousey){
 	int curwin = glutGetWindow();
@@ -158,20 +162,18 @@ void redraw_window2(void)
 }
 void redraw_window3(void)
 {
+	glColor4f(1,1,1,1);
     if(cancelalarm==1){
 	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
-    }if(cancelalarm==0){
-        imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+   }if(cancelalarm==0){
+    imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
     }
-	drawSecZone3();
-        // Check for Type of alarm
-    /*    glColor4f(1,1,1,0.0032);
-        imagelocation(5,0,0,1,0,1,1,0,1,-0.617,0.31,-0.83,1.21,0.31,-0.83,1.21,0.31,-0.35,-0.617,0.31,-0.35);
-	imagelocation(5,0,0,1,0,1,1,0,1,0.98,0.31,-0.35,1.21,0.31,-0.35,1.21,0.31,-0.18,0.98,0.31,-0.18);
-	imagelocation(5,0,0,1,0,1,1,0,1,0.835,0.31,-0.185,1.21,0.31,-0.185,1.21,0.31,0.102,0.835,0.31,0.102);
-      //  glColor4f(1,1,1,1.0);*/
-    glutPostRedisplay();
-	glutSwapBuffers();
+	glColor4f(1,1,1,0.0032);
+	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
+	imagelocation(5,0,0,1,0,1,1,0,1,0.83,0.31,-0.35,0.975,0.31,-0.35,0.975,0.31,-0.18,0.83,0.31,-0.18);
+	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,0.83,0.31,-0.35,0.83,0.31,0.345,-1.21,0.31,0.345);
+          glutPostRedisplay();
+          glutSwapBuffers();
 }
 void Display(void)
 {
@@ -395,7 +397,7 @@ void rcmenu( int id)
                         drawZone(globalZoneId,1);
 			//call fire control function, wait for a min to show no people window
 						systemControl.fire_event(globalZoneId);
-						glutDisplayFunc(redraw_window1);
+						glutDisplayFunc(redraw_window3);
                         // There should be a 2 min gap between changing window
 			//switch floor plan to no people
 						
@@ -462,7 +464,9 @@ void rcmenu( int id)
                         printf("SECURITY Alarm TURNED ON\n" );
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
                         glColor4f(1,1,1,0.0032);
-                        
+						systemControl.security_event(globalZoneId);
+						glutDisplayFunc(redraw_window1);
+                        systemControl.active_alarms();
                         // wait for mouse left click
                         // get globalZoneId from mouse left click
                         // replace drawZone(1,1) with
@@ -478,7 +482,9 @@ void rcmenu( int id)
 			break;
                 case 9:
 			//get mousex, mousey
-                        printf("SECURITY Alarm TURNED OFF\n" );
+					   cout << "Please enter the password" << endl;
+					   cin >> password;
+						systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_SECURITY); 
                         if(globalZoneId == 1 || globalZoneId == 2 || globalZoneId == 3){
                             glutDestroyWindow(window[1]);
                             window[1] = glutCreateSubWindow(window[0],0,0,650,500);
@@ -509,6 +515,9 @@ void rcmenu( int id)
 			break;
 		case 10:
                         //glColor4f(1,0,0,1.0);
+						cout << "Enter password to cancel alarms"<< endl;
+						cin >> password;
+						systemControl.turn_off(password);
                         printf("ALL ALARMS TURNED OFF\n" );
 
                         glutDestroyWindow(window[1]);
@@ -649,8 +658,6 @@ void reshape(int w, int h)
 int main(int argc, char** argv)
 {
         writemessage();
-		systemControl.turn_off("fsams");
-		systemControl.active_alarms();
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(650, 500);

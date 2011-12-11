@@ -437,7 +437,7 @@ void Control::disable_alarm(int zoneID) {
 	
 void Control::disable_alarm(int zoneID, string alarm_type) {
 	// Disables specific alarm in zone passed
-	string strquery = "UPDATE alarm SET resolveDt = datetime('now') WHERE (zoneID = " + zoneString(zoneID) + ") AND (type = " + alarm_type + ") AND (resolveDt == 0);";
+	string strquery = "UPDATE alarm SET resolveDt = datetime('now') WHERE (zoneID = " + zoneString(zoneID) + ") AND (type = '" + alarm_type + "') AND (resolveDt == 0);";
 	char *query = strdup(strquery.c_str());
 	db->query(query);
 
