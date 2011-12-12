@@ -787,8 +787,8 @@ void reshape(int w, int h)
 
 int main(int argc, char** argv)
 {
-	systemControl.turn_off("fsams");
-    writemessage();
+	systemControl.initBldg();
+	writemessage();
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize(650, 500);
