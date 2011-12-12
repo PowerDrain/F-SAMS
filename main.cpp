@@ -109,7 +109,7 @@ void display(void)
 void Floor1redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)){
+	if(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)||systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)|systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8)){
 	imagelocation(7,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	//Front exit
 	imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
@@ -162,7 +162,7 @@ void Floor1redraw(void)
 void Floor2redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)){
+	if(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)||systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)|systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8)){
 	imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	//Front stair
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
@@ -208,7 +208,7 @@ void Floor2redraw(void)
 void Floor3redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8)){
+	if(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)||systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)|systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8)){
 	imagelocation(9,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	//Front stair
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
@@ -516,16 +516,36 @@ void rcmenu( int id)
                         // There should be a 2 min gap between changing window
 			//switch floor plan to no people
                         glColor4f(1,1,1,1);
+						glutSetWindow(window[1]);
+						glutPopWindow();
+						glutPopWindow();
+						glutDisplayFunc(Floor1redraw);
+						glutSetWindow(window[2]);
+						glutPopWindow();
+						glutPopWindow();
+						glutDisplayFunc(Floor2redraw);
+						glutSetWindow(window[3]);
+						glutPopWindow();
+						glutPopWindow();
+						glutDisplayFunc(Floor3redraw);
+
+
                         if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
-                        glutDisplayFunc(Floor1redraw);
+                          glutSetWindow(window[1]);
+						  glutPopWindow();
+						  glutPopWindow();
                         // Turn back previous alarms
                         }
                         if(globalZoneId==4 ||globalZoneId==5){
-                        glutDisplayFunc(Floor2redraw);
+                          glutSetWindow(window[2]);
+						  glutPopWindow();
+						  glutPopWindow();
                         // Turn back previous alarms
                         }
                         if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
-                        glutDisplayFunc(Floor3redraw);
+                          glutSetWindow(window[3]);
+						  glutPopWindow();
+						  glutPopWindow();
                         // Turn back previous alarms
                         }
 						systemControl.clear_bldg(globalZoneId);
@@ -564,6 +584,9 @@ void rcmenu( int id)
 								}
 							 }
 				   }
+				   if(!(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)||systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)|systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8))){
+							systemControl.fill_bldg(globalZoneId);}
+                        
 			break;
 		case 7:
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -628,7 +651,29 @@ void rcmenu( int id)
 							glutDisplayFunc(Display1);
 						}
 			//call cancel all
-			//reset all floor plans
+			
+						if(!(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)||systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)|systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8))){
+							systemControl.fill_bldg(globalZoneId);}
+                        
+						//Reset back to current window
+						if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
+                          glutSetWindow(window[1]);
+						  glutPopWindow();
+						  glutPopWindow();
+                        // Turn back previous alarms
+                        }
+                        if(globalZoneId==4 ||globalZoneId==5){
+                          glutSetWindow(window[2]);
+						  glutPopWindow();
+						  glutPopWindow();
+                        // Turn back previous alarms
+                        }
+                        if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
+                          glutSetWindow(window[3]);
+						  glutPopWindow();
+						  glutPopWindow();
+                        // Turn back previous alarms
+                        }
 			break;
 
 	case 27: /* exit the program */

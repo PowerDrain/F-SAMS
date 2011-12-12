@@ -7,6 +7,7 @@
 #include <time.h>
 #include "Messaging.h"
 #include "Database.h"
+#include <Windows.h>
 using namespace std;
 
 class Control {
