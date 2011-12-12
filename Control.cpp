@@ -38,14 +38,6 @@ void Control::initBldg() {
 	db->query("CREATE TABLE admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT);");
 	db->query("CREATE TABLE log (id INTEGER PRIMARY KEY AUTOINCREMENT, createDt INTEGER, log_text TEXT);");
 
-	/* DROP QUERIES
-	db->query("DROP TABLE floor;");
-	db->query("DROP TABLE zone;");
-	db->query("DROP TABLE room;");
-	db->query("DROP TABLE alarm;");
-	db->query("DROP TABLE admin;"); */
-
-
 	/* Initial table information [DATABASE ALREADY CONTAINS THIS INFORMATION -- DO NOT UNCOMMENT!] */
 	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (1, 'Floor 1', '1', datetime('now'));");
 	db->query("INSERT INTO floor (id, name, occupied, createDt) VALUES (2, 'Floor 2', '1', datetime('now'));");
