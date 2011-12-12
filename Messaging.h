@@ -15,6 +15,7 @@ public:
 	string DISABLE_ALARM_TYPE;
 
 	string CLEAR_BUILDING;
+	string FILL_BUILDING;
 	string CALL_POLICE_WARNING;
 	string CALL_POLICE;
 	string CALL_FIRE_DEPARTMENT_WARNING;
@@ -48,6 +49,7 @@ public:
 		DISABLE_ALARM_TYPE					= "alarms DISABLED in Zone ";
 
 		CLEAR_BUILDING						= "The building is clear of people";
+		FILL_BUILDING						= "People have re-entered the building";
 		CALL_POLICE_WARNING					= "The Police Station will be called in 2 MINUTES via 9-1-1";
 		CALL_POLICE							= "Contacting the Police Station via 9-1-1";
 		CALL_FIRE_DEPARTMENT_WARNING		= "The Fire Department will be called in 2 MINUTES via 9-1-1";

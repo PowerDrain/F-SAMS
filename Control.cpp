@@ -281,6 +281,16 @@ void Control::clear_bldg(int zoneID) {
 	syslog(msg.CLEAR_BUILDING + msg.ELLIPSIS);
 }
 
+void Control::fill_bldg(int zoneID) {
+	//Clears all floors of the building
+	string strquery = "UPDATE floor SET occupied = '1';";
+	char *query = strdup(strquery.c_str());
+	db->query(query);
+
+	// Create log information		
+	syslog(msg.FILL_BUILDING + msg.ELLIPSIS);
+}
+
 bool Control::fire_alarm_active(int zoneID) {
 	
 	// Check database for active fire alarm based on zone id

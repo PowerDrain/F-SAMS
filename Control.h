@@ -25,10 +25,11 @@ public:
 	void fire_test_event(int); // DONE!
 	void security_event(int); // DONE!
 	void security_test_event(int); // DONE!
-	void turn_off(string); // DONE!
-	void turn_off(int, string); // DONE!
-	void turn_off(int, string, string); // DONE!
+	bool turn_off(string); // DONE!
+	bool turn_off(int, string); // DONE!
+	bool turn_off(int, string, string); // DONE!
 	void clear_bldg(int); // DONE!
+	void fill_bldg(int); //DONE!
 	bool fire_alarm_active(int);
 	bool security_alarm_active(int);
 	void active_alarms(); // DONE!
