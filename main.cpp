@@ -123,7 +123,6 @@ void Floor1redraw(void)
 
 	//Check Zone 1 Fire
 	  if(systemControl.fire_alarm_active(1)){
-		  cout << systemControl.fire_alarm_active(1) <<endl;
 	  imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
           imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
 	  }
@@ -218,7 +217,7 @@ void Floor3redraw(void)
 	}else{
 		imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
 	}
-	glColor4f(1,1,1,0.032);
+	glColor4f(1,1,1,0.22);
 
 	//Check Zone 6 Fire
 	if(systemControl.fire_alarm_active(6)){
@@ -277,7 +276,7 @@ void drawFireZone1(void)
           glColor4f(1,0,0,1.0);
           imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
 		  imagelocation(6,0,0,1,0,1,1,0,1,0.5,0.31,-0.05,0.7,0.31,-0.05,0.7,0.31,0.09,0.5,0.31,0.09);
-           glColor4f(1,1,1,0.32);
+           glColor4f(1,1,1,0.0032);
 		   glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -291,7 +290,7 @@ void drawFireZone2(void){
 	  glColor4f(1,0,0,1.0);
           imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
 		  imagelocation(6,0,0,1,0,1,1,0,1,0.5,0.31,-0.05,0.7,0.31,-0.05,0.7,0.31,0.09,0.5,0.31,0.09);
-           glColor4f(1,1,1,0.32);
+           glColor4f(1,1,1,0.0032);
 	  glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -305,7 +304,7 @@ void drawFireZone3(void){
 	glColor4f(1,0,0,1.0);
           imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
 		  imagelocation(6,0,0,1,0,1,1,0,1,0.5,0.31,-0.05,0.7,0.31,-0.05,0.7,0.31,0.09,0.5,0.31,0.09);
-           glColor4f(1,1,1,0.32);
+           glColor4f(1,1,1,0.0032);
 	glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -322,7 +321,7 @@ void drawFireZone4(void){
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
 	//Rear stair
 	imagelocation(6,0,0,1,0,1,1,0,1,0.45,0.31,0.175,0.65,0.31,0.175,0.65,0.31,0.315,0.45,0.31,0.315);
-			glColor4f(1,1,1,0.32);
+			glColor4f(1,1,1,0.0032);
 			glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -339,7 +338,7 @@ void drawFireZone5(void){
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
 	//Rear stair
 	imagelocation(6,0,0,1,0,1,1,0,1,0.45,0.31,0.175,0.65,0.31,0.175,0.65,0.31,0.315,0.45,0.31,0.315);
-			glColor4f(1,1,1,0.32);
+			glColor4f(1,1,1,0.0032);
 			glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -353,7 +352,7 @@ void drawFireZone6(void){
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
 	//Rear stair
 	imagelocation(6,0,0,1,0,1,1,0,1,0.45,0.31,0.175,0.65,0.31,0.175,0.65,0.31,0.315,0.45,0.31,0.315);
-			glColor4f(1,1,1,0.32);
+			glColor4f(1,1,1,0.0032);
 		  glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -369,7 +368,7 @@ void drawFireZone7(void){
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
 	//Rear stair
 	imagelocation(6,0,0,1,0,1,1,0,1,0.45,0.31,0.175,0.65,0.31,0.175,0.65,0.31,0.315,0.45,0.31,0.315);
-			glColor4f(1,1,1,0.32);
+			glColor4f(1,1,1,0.0032);
 			glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -387,7 +386,7 @@ void drawFireZone8(void){
 	imagelocation(6,0,0,1,0,1,1,0,1,-0.1,0.31,-0.325,0.1,0.31,-0.325,0.1,0.31,-0.185,-0.1,0.31,-0.185);
 	//Rear stair
 	imagelocation(6,0,0,1,0,1,1,0,1,0.45,0.31,0.175,0.65,0.31,0.175,0.65,0.31,0.315,0.45,0.31,0.315);
-			glColor4f(1,1,1,0.32);
+			glColor4f(1,1,1,0.0032);
 		glutPostRedisplay();
           glutSwapBuffers();
 }
@@ -529,6 +528,7 @@ void rcmenu( int id)
                         glutDisplayFunc(Floor3redraw);
                         // Turn back previous alarms
                         }
+						systemControl.clear_bldg(globalZoneId);
                         
                     }else{
                              cout << "You have to selected the Zone First, use mouse left click to select \n";
@@ -546,24 +546,24 @@ void rcmenu( int id)
 		case 6:
                     cout << "Please enter the password" << endl;
 					cin >> password;
-		   systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_FIRE);
-                    if(globalZoneId!=0){
-                        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-                        glColor4f(1,1,1,1);
-                        if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
-                        glutDisplayFunc(Floor1redraw);
-                        // Turn back previous alarms
-                        }
-                        if(globalZoneId==4 ||globalZoneId==5){
-                        glutDisplayFunc(Floor2redraw);
-                        // Turn back previous alarms
-                        }
-                        if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
-                        glutDisplayFunc(Floor3redraw);
-                        // Turn back previous alarms
-                        }
-                     }
-
+				   if (systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_FIRE)){
+							if(globalZoneId!=0){
+								glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+								glColor4f(1,1,1,1);
+								if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
+								glutDisplayFunc(Floor1redraw);
+								// Turn back previous alarms
+								}
+								if(globalZoneId==4 ||globalZoneId==5){
+								glutDisplayFunc(Floor2redraw);
+								// Turn back previous alarms
+								}
+								if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
+								glutDisplayFunc(Floor3redraw);
+								// Turn back previous alarms
+								}
+							 }
+				   }
 			break;
 		case 7:
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -582,24 +582,25 @@ void rcmenu( int id)
                 case 9:
                         cout << "Please enter the password" << endl;
 					   cin >> password;
-                        systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_SECURITY);
-			if(globalZoneId!=0){
-                        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+                        if (systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_SECURITY)){
+							if(globalZoneId!=0){
+										glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-                        glColor4f(1,1,1,1);
-                        if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
-                        glutDisplayFunc(Floor1redraw);
-                        // Turn back previous alarms
-                        }
-                        if(globalZoneId==4 ||globalZoneId==5){
-                        glutDisplayFunc(Floor2redraw);
-                        // Turn back previous alarms
-                        }
-                        if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
-                        glutDisplayFunc(Floor3redraw);
-                        // Turn back previous alarms
-                        }
-                     }
+										glColor4f(1,1,1,1);
+										if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
+										glutDisplayFunc(Floor1redraw);
+										// Turn back previous alarms
+										}
+										if(globalZoneId==4 ||globalZoneId==5){
+										glutDisplayFunc(Floor2redraw);
+										// Turn back previous alarms
+										}
+										if(globalZoneId==6 ||globalZoneId==7 ||globalZoneId==8){
+										glutDisplayFunc(Floor3redraw);
+										// Turn back previous alarms
+										}
+								}
+						}
 
 		//call cancel alarm function using zone, password, security
 		//reset floor plan
@@ -607,25 +608,25 @@ void rcmenu( int id)
 		case 10:
                         cout << "Enter password to cancel alarms"<< endl;
 						cin >> password;
-						systemControl.turn_off(password);
-						glutSetWindow(window[1]);
-						glutPopWindow();
-						glutPopWindow();
-						glColor4f(1,1,1,1);
-						glutDisplayFunc(display);
+						if (systemControl.turn_off(password)){
+							glutSetWindow(window[1]);
+							glutPopWindow();
+							glutPopWindow();
+							glColor4f(1,1,1,1);
+							glutDisplayFunc(display);
 
-						glutSetWindow(window[2]);
-						glutPopWindow();
-						glutPopWindow();
-						glColor4f(1,1,1,1);
-						glutDisplayFunc(Display);
+							glutSetWindow(window[2]);
+							glutPopWindow();
+							glutPopWindow();
+							glColor4f(1,1,1,1);
+							glutDisplayFunc(Display);
 
-						glutSetWindow(window[3]);
-						glutPopWindow();
-						glutPopWindow();
-						glColor4f(1,1,1,1);
-						glutDisplayFunc(Display1);
-                       
+							glutSetWindow(window[3]);
+							glutPopWindow();
+							glutPopWindow();
+							glColor4f(1,1,1,1);
+							glutDisplayFunc(Display1);
+						}
 			//call cancel all
 			//reset all floor plans
 			break;

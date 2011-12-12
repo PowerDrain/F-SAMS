@@ -110,10 +110,10 @@ void Control::fire_event(int zoneID) {
 				// Have to wait for people to exit
 			} else {
 				// Power off the zone
-				power_off(zoneID);
+				//power_off(zoneID);
 
 				// Turn on sprinklers in zone
-				sprink_on(zoneID);
+				//sprink_on(zoneID);
 			}
 
 		} else {
@@ -135,10 +135,10 @@ void Control::fire_event(int zoneID) {
 				// Have to wait for people to exit
 			} else {
 				// Power off the zone
-				power_off(zoneID);
+				//power_off(zoneID);
 
 				// Turn on sprinklers in zone
-				sprink_on(zoneID);
+				//sprink_on(zoneID);
 			}
 		}
 	}
@@ -203,7 +203,7 @@ void Control::security_test_event(int zoneID){
 	log_alarm(zoneID, msg.ALARM_TYPE_SECURITY_TEST);
 }
 	
-void Control::turn_off(string password) {
+bool Control::turn_off(string password) {
 	//Turns off all alarms in zone
 	if (password_ok(password)) {
 
@@ -222,9 +222,10 @@ void Control::turn_off(string password) {
 		// Create log information -- password incorrect
 		syslog(msg.INCORRECT_PASSWORD + msg.ELLIPSIS);
 	}
+	return (password_ok(password));
 }
 	
-void Control::turn_off(int zoneID, string password) {
+bool Control::turn_off(int zoneID, string password) {
 	//Turns off all alarms in zone
 	if (password_ok(password)) {
 
@@ -241,9 +242,10 @@ void Control::turn_off(int zoneID, string password) {
 		// Create log information -- password incorrect
 		syslog(msg.INCORRECT_PASSWORD + msg.ELLIPSIS);
 	}
+	return (password_ok(password));
 }
 	
-void Control::turn_off(int zoneID, string password, string alarm_type) {
+bool Control::turn_off(int zoneID, string password, string alarm_type) {
 	//Turns off specific alarm in zone
 	if (password_ok(password)) {
 
@@ -260,6 +262,7 @@ void Control::turn_off(int zoneID, string password, string alarm_type) {
 		// Create log information -- password incorrect
 		syslog(msg.INCORRECT_PASSWORD + msg.ELLIPSIS);
 	}
+	return (password_ok(password));
 }
 
 void Control::clear_bldg(int zoneID) {
@@ -394,7 +397,16 @@ bool Control::floor_occupied(int zoneID){
 	}
 	//If the password is correct then return true
 	if (occupied == "1") {
-		cout << "Checking for people...People found." << endl;
+		cout << "Checking for people... People found" << endl;
+		cout << "Evacuating building...";
+		for (int i = 0; i < 1000000; i++){
+				for (int j = 0; j < 10000; j++){	
+				}
+				if (i % 100000 == 0){
+						cout << ".";
+					}
+			}
+		cout << " building empty." << endl;
 		return true;
 	} else {
 		cout << "Checking for people...Building empty." << endl;
