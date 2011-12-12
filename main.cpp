@@ -677,6 +677,11 @@ void rcmenu( int id)
 			break;
 
 	case 27: /* exit the program */
+		cout << "Programing exiting. . . " << endl;
+		cout << "Displaying system logs. . . " << endl;
+		systemControl.active_alarms();
+		cout << "Press [ENTER] to exit program.";
+		cin.get();
 		exit(0);
 		break;
 	default:
