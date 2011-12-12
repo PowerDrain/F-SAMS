@@ -109,21 +109,21 @@ void display(void)
 void Floor1redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(cancelalarm==0){
+	if(systemControl.fire_alarm_active(1)||systemControl.fire_alarm_active(2)||systemControl.fire_alarm_active(3)){
 	imagelocation(7,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
-}
-	else if(cancelalarm==1){
-	imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);}
-	glColor4f(1,1,1,0.32);
+	imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
+	}else{
+		imagelocation(1,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	}
+
+	glColor4f(1,1,1,0.22);
 
 	//Check Zone 1 Fire
 	  if(systemControl.fire_alarm_active(1)){
 		  cout << systemControl.fire_alarm_active(1) <<endl;
 	  imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
           imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,-0.35,-0.3,0.31,-0.35,-0.3,0.31,0.82,-1.21,0.31,0.82);
-          glColor4f(1,0,0,1.0);
-          imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
-          glColor4f(1,1,1,0.32);}
+	  }
 	//Check Zone 1 Security
 	  if(systemControl.security_alarm_active(1)){
 	  imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,-0.83,-0.617,0.31,-0.83,-0.617,0.31,-0.35,-1.21,0.31,-0.35);
@@ -160,11 +160,13 @@ void Floor1redraw(void)
 void Floor2redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(cancelalarm==0){
-	imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);}
-	else if(cancelalarm==1){
-	imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);}
-	glColor4f(1,1,1,0.32);	
+	if(systemControl.fire_alarm_active(4)||systemControl.fire_alarm_active(5)){
+	imagelocation(8,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,0.07,-1.0,0.31,0.07,-1.00,0.31,-0.07,-1.2,0.31,-0.07);
+	}else{
+		imagelocation(2,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	}
+	glColor4f(1,1,1,0.22);	
 
 	//Check Zone 4 Fire
 	if(systemControl.fire_alarm_active(4)){
@@ -201,18 +203,20 @@ void Floor2redraw(void)
 void Floor3redraw(void)
 {
 	glColor4f(1,1,1,1.0);
-	if(cancelalarm==0){
-	imagelocation(9,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);}
-	else if(cancelalarm==1){
-	imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);}
-	glColor4f(1,1,1,0.32);
+	if(systemControl.fire_alarm_active(6)||systemControl.fire_alarm_active(7)||systemControl.fire_alarm_active(8)){
+	imagelocation(9,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	imagelocation(6,0,0,1,0,1,1,0,1,-1.2,0.31,-0.07,-1.0,0.31,-0.07,-1.00,0.31,0.07,-1.2,0.31,0.07);
+	}else{
+		imagelocation(3,0,0,1,0,1,1,0,1,-1.45,0.31,1.099,1.45,0.31,1.099,1.45,0.31,-1.099,-1.45,0.31,-1.099);
+	}
+	glColor4f(1,1,1,0.032);
 
 	//Check Zone 6 Fire
 	if(systemControl.fire_alarm_active(6)){
 	imagelocation(4,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
 	}
 	//Check Zone 6 Security
-	if(systemControl.security_alarm_active(6)){
+	if(systemControl.fire_alarm_active(6)){
 	imagelocation(5,0,0,1,0,1,1,0,1,-1.21,0.31,0.34,0.45,0.31,0.34,0.45,0.31,0.82,-1.21,0.31,0.82);
 	}
 
@@ -457,7 +461,6 @@ void rcmenu( int id)
 	case 4:
 
                    if(globalZoneId!=0){
-                        cancelalarm=0;
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
                         glColor4f(1,1,1,0.0032);
                         drawZone(globalZoneId,1);
@@ -497,7 +500,6 @@ void rcmenu( int id)
 					cin >> password;
 		   systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_FIRE);
                     if(globalZoneId!=0){
-                        cancelalarm=1;
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
                         glColor4f(1,1,1,1);
                         if(globalZoneId==1 ||globalZoneId==2 ||globalZoneId==3){
@@ -534,7 +536,6 @@ void rcmenu( int id)
 					   cin >> password;
                         systemControl.turn_off(globalZoneId,password,msg.ALARM_TYPE_SECURITY);
 			if(globalZoneId!=0){
-                            cancelalarm=1;
                         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
                         glColor4f(1,1,1,1);
